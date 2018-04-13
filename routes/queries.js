@@ -22,8 +22,8 @@ function getAllUsers(req, res, next) {
 
 
 function addUser(req, res, next) {
-  db.none('insert into users(firstname, lastname, email, phone, slackusername, isactive)' +
-      'values(${firstName}, ${lastName}, ${email}, ${phone}, ${slackUsername}, ${isActive})',
+  db.none('insert into users(firstname, lastname, slackusername, isactive)' +
+      'values(${firstName}, ${lastName}, ${slackUsername}, ${isActive})',
     req.body)
     .then(function () {
       res.status(200)
