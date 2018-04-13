@@ -1,14 +1,12 @@
 {
-  "name": "bc3001",
+  "name": "breakfast-club-3002",
   "version": "1.0.0",
-  "description": "Breakfast Club App",
-  "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client": "cd client && npm run start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "start": "npm run dev"
   },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
@@ -16,6 +14,7 @@
     "pg-promise": "^8.2.3"
   },
   "devDependencies": {
+    "concurrently": "^3.5.0",
     "@types/node": "^9.6.4",
     "typescript": "^2.8.1"
   }
