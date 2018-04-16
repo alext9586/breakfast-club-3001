@@ -5,9 +5,16 @@ var options = {
   promiseLib: promise
 };
 
+var cn = {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: "breakfastclub",
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS
+};
+
 var pgp = require('pg-promise')(options);
-var connectionString = 'postgres://localhost:5432/breakfastclub';
-var db = pgp(connectionString);
+var db = pgp(cn);
 
 function getAllUsers(req, res, next) {
   db.any('select * from users')
