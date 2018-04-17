@@ -16,7 +16,7 @@ var cn = {
 var pgp = require('pg-promise')(options);
 var db = pgp(cn);
 
-function getAllUsers(req, res, next) {
+function getAllMembers(req, res, next) {
   db.any('select * from users')
     .then(function (data) {
       res.status(200)
@@ -28,7 +28,7 @@ function getAllUsers(req, res, next) {
 }
 
 
-function addUser(req, res, next) {
+function addMember(req, res, next) {
   db.none('insert into users(firstname, lastname, slackusername, isactive)' +
       'values(${firstName}, ${lastName}, ${slackUsername}, ${isActive})',
     req.body)
@@ -36,7 +36,7 @@ function addUser(req, res, next) {
       res.status(200)
         .json({
           status: 200,
-          message: 'Inserted one user'
+          message: 'Inserted one member'
         });
     })
     .catch(function (err) {
@@ -44,15 +44,15 @@ function addUser(req, res, next) {
     });
 }
 
-function deleteUser(req, res, next) {
-  db.result('DELETE FROM users WHERE id = ${userId}', req.body)
+function deleteMember(req, res, next) {
+  db.result('DELETE FROM users WHERE id = ${memberId}', req.body)
     .then(result => {
         // rowCount = number of rows affected by the query
         console.log(result.rowCount); // print how many records were deleted;
         res.status(200)
           .json({
             status: 200,
-            message: 'Deleted one user'
+            message: 'Deleted one member'
           });
     })
     .catch(error => {
@@ -61,7 +61,7 @@ function deleteUser(req, res, next) {
 }
 
 module.exports = {
-  getAllUsers: getAllUsers,
-  addUser: addUser,
-  deleteUser: deleteUser
+  getAllMembers: getAllMembers,
+  addMember: addMember,
+  deleteMember: deleteMember
 };

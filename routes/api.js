@@ -43,7 +43,7 @@ var db = require('./queries');
  *         schema:
  *           $ref: '#/definitions/User'
  */
-router.get('/users', db.getAllUsers);
+router.get('/members/all', db.getAllMembers);
 
 /**
  * @swagger
@@ -65,8 +65,8 @@ router.get('/users', db.getAllUsers);
  *       200:
  *         description: Successfully created
  */
-router.post('/users/add', db.addUser);
+router.post('/members/add', db.addMember);
 
-router.delete('/users/delete', db.deleteUser);
+router.delete('/members/delete', db.deleteMember);
 
 module.exports = router;

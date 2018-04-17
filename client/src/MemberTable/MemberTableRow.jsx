@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import DeleteMemberButton from './DeleteMemberButton';
 
 class MemberTableRow extends Component {
     constructor(props) {
@@ -7,33 +8,6 @@ class MemberTableRow extends Component {
         this.state = {
             member: props.member
         };
-
-        this.removeClick = this.removeClick.bind(this);
-    }
-
-    deleteMember = async (userId) => {
-        var data = {
-            userId: userId
-        };
-        
-        const response = await fetch('/api/users/delete', {
-            method: 'DELETE',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
-
-        const body = await response.json();
-
-        if (response.status !== 200) throw Error(body.message);
-
-        return body;
-    };
-
-    removeClick(e, userId) {
-        this.deleteMember(userId).then(response => {console.log(response)});
     }
 
     render() {
@@ -53,9 +27,7 @@ class MemberTableRow extends Component {
                     {member.isactive.toString()}
                 </td>
                 <td>
-                    <button type="button" onClick={(e) => this.removeClick(e, member.id)}>
-                        Remove
-                    </button>
+                    <DeleteMemberButton memberId={member.id} />
                 </td>
             </tr>
         );

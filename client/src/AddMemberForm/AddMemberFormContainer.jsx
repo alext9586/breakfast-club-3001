@@ -23,7 +23,7 @@ class AddMemberFormContainer extends Component {
             isActive: true
         };
         
-        const response = await fetch('/api/users/add', {
+        const response = await fetch('/api/members/add', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
