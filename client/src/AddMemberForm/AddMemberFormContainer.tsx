@@ -24,7 +24,7 @@ export class AddMemberFormContainer extends React.Component<IAddMemberFormContai
     //     success: value && /Hello World/.test(value) ? "Thanks for entering 'Hello World'!" : null
     // });
 
-    private addMember = async (formValues: any) => {        
+    private async addMember(formValues: any) {        
         const response = await fetch('/api/members/add', {
             body: JSON.stringify(new Member(
                 "",
@@ -46,7 +46,7 @@ export class AddMemberFormContainer extends React.Component<IAddMemberFormContai
         };
 
         return body;
-    };
+    }
 
     render() {
         return (

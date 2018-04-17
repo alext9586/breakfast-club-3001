@@ -36,14 +36,14 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
             .catch(err => console.log(err));
     }
 
-    callApi = async () => {
+    private async callApi() {
         const response = await fetch('/api/members/all');
         const body = await response.json();
 
         if (response.status !== 200) throw Error(body.message);
 
         return body;
-    };
+    }
 
     render() {
         return (<MemberTable membersList={this.state.membersList} />);

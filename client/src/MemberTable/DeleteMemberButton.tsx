@@ -19,7 +19,7 @@ export class DeleteMemberButton extends React.Component<IDeleteMemberButtonProps
         this.removeClick = this.removeClick.bind(this);
     }
 
-    private deleteMember = async (memberId: string) => {
+    private async deleteMember(memberId: string) {
         var data = {
             memberId: memberId
         };
@@ -38,7 +38,7 @@ export class DeleteMemberButton extends React.Component<IDeleteMemberButtonProps
         if (response.status !== 200) throw Error(body.message);
 
         return body;
-    };
+    }
 
     private removeClick(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
         this.deleteMember(memberId).then(response => {console.log(response)});
