@@ -1,6 +1,14 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 
-class DeleteMemberButton extends Component {
+interface IDeleteMemberButtonProps {
+    memberId: string;
+}
+
+interface IDeleteMemberButtonState {
+    memberId: string;
+}
+
+export class DeleteMemberButton extends React.Component<IDeleteMemberButtonProps, IDeleteMemberButtonState> {
     constructor(props) {
         super(props);
         
@@ -11,7 +19,7 @@ class DeleteMemberButton extends Component {
         this.removeClick = this.removeClick.bind(this);
     }
 
-    deleteMember = async (memberId) => {
+    private deleteMember = async (memberId: string) => {
         var data = {
             memberId: memberId
         };
@@ -32,7 +40,7 @@ class DeleteMemberButton extends Component {
         return body;
     };
 
-    removeClick(e, memberId) {
+    private removeClick(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
         this.deleteMember(memberId).then(response => {console.log(response)});
     }
 
@@ -44,5 +52,3 @@ class DeleteMemberButton extends Component {
         );
     }
 }
-
-export default DeleteMemberButton;

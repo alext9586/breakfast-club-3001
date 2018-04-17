@@ -1,5 +1,5 @@
 {
-  "name": "breakfast-club-3002",
+  "name": "breakfast-club-3001",
   "version": "1.0.0",
   "scripts": {
     "client": "cd client && npm run start",

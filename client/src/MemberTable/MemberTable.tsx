@@ -1,7 +1,16 @@
-import React, { Component } from 'react';
-import MemberTableRow from './MemberTableRow';
+import * as React from 'react';
+import { MemberTableRow } from './MemberTableRow';
+import { IMember } from '../Models/Member';
 
-class MemberTable extends Component {
+interface IMemberTableProps {
+    membersList: IMember[];
+}
+
+interface IMemberTableState {
+    membersList: IMember[];
+}
+
+export class MemberTable extends React.Component<IMemberTableProps, IMemberTableState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -9,7 +18,7 @@ class MemberTable extends Component {
         };
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: IMemberTableProps, prevState: IMemberTableState) {
         if(nextProps.membersList !== prevState.membersList) {
             return {
                 membersList: nextProps.membersList
@@ -20,7 +29,7 @@ class MemberTable extends Component {
     }
 
     render() {
-        var membersRows = this.state.membersList.map(function(item) {
+        var membersRows = this.state.membersList.map(function(item: IMember) {
             return (<MemberTableRow key={item.id} member={item} />);
         });
 
@@ -41,5 +50,3 @@ class MemberTable extends Component {
         );
     }
 }
-
-export default MemberTable;

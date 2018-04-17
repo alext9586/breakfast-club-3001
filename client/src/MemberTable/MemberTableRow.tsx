@@ -1,7 +1,16 @@
-import React, { Component } from 'react';
-import DeleteMemberButton from './DeleteMemberButton';
+import * as React from 'react';
+import { DeleteMemberButton } from './DeleteMemberButton';
+import { IMember } from '../Models/Member';
 
-class MemberTableRow extends Component {
+interface IMemberTableRowProps {
+    member: IMember;
+}
+
+interface IMemberTableRowState {
+    member: IMember;
+}
+
+export class MemberTableRow extends React.Component<IMemberTableRowProps, IMemberTableRowState> {
     constructor(props) {
         super(props);
         
@@ -15,16 +24,16 @@ class MemberTableRow extends Component {
         return (
             <tr>
                 <td>
-                    {member.firstname}
+                    {member.firstName}
                 </td>
                 <td>
-                    {member.lastname}
+                    {member.lastName}
                 </td>
                 <td>
-                    {member.slackusername}
+                    {member.slackUsername}
                 </td>
                 <td>
-                    {member.isactive.toString()}
+                    {member.isActive.toString()}
                 </td>
                 <td>
                     <DeleteMemberButton memberId={member.id} />
@@ -33,5 +42,3 @@ class MemberTableRow extends Component {
         );
     }
 }
-
-export default MemberTableRow;

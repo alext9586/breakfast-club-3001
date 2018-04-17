@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import * as React from 'react';
 import './App.css';
-import MemberTableContainer from './MemberTable/MemberTableContainer';
-import AddMemberFormContainer from './AddMemberForm/AddMemberFormContainer';
+import { MemberTableContainer } from './MemberTable/MemberTableContainer';
+import { AddMemberFormContainer } from './AddMemberForm/AddMemberFormContainer';
 
-class App extends Component {  
-  render() {
+import logo from './logo.svg';
+
+class App extends React.Component {
+  public render() {
     return (
       <div className="App">
         <header className="App-header">

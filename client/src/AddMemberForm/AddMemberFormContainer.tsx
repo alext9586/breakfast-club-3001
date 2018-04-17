@@ -1,8 +1,17 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { Form, Text } from 'react-form';
+import { Member } from '../Models/Member';
 
-class AddMemberFormContainer extends Component {
-    constructor(props) {
+interface IAddMemberFormContainerProps {
+    formId: string;
+}
+
+interface IAddMemberFormContainerState {
+    formId: string;
+}
+
+export class AddMemberFormContainer extends React.Component<IAddMemberFormContainerProps, IAddMemberFormContainerState> {
+    constructor(props: IAddMemberFormContainerProps) {
         super(props);
         this.state = {
             formId: props.formId
@@ -15,26 +24,26 @@ class AddMemberFormContainer extends Component {
     //     success: value && /Hello World/.test(value) ? "Thanks for entering 'Hello World'!" : null
     // });
 
-    addMember = async (formValues) => {
-        var data = {
-            firstName: formValues.firstName,
-            lastName: formValues.lastName,
-            slackUsername: formValues.slackUsername,
-            isActive: true
-        };
-        
+    private addMember = async (formValues: any) => {        
         const response = await fetch('/api/members/add', {
-            method: 'POST',
+            body: JSON.stringify(new Member(
+                "",
+                formValues.firstName,
+                formValues.lastName,
+                formValues.slackUsername
+            )),
             headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
+            method: 'POST'
         });
 
         const body = await response.json();
 
-        if (response.status !== 200) throw Error(body.message);
+        if (response.status !== 200) {
+            throw Error(body.message)
+        };
 
         return body;
     };
@@ -72,5 +81,3 @@ class AddMemberFormContainer extends Component {
         );
     }
 }
-
-export default AddMemberFormContainer;
