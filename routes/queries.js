@@ -35,7 +35,7 @@ function addUser(req, res, next) {
     .then(function () {
       res.status(200)
         .json({
-          status: 'success',
+          status: 200,
           message: 'Inserted one user'
         });
     })
@@ -44,7 +44,24 @@ function addUser(req, res, next) {
     });
 }
 
+// function deleteUser(req, res, next) {
+//   db.result('DELETE FROM users WHERE uuid = $1', '${userId}')
+//     .then(result => {
+//         // rowCount = number of rows affected by the query
+//         console.log(result.rowCount); // print how many records were deleted;
+//         res.status(200)
+//           .json({
+//             status: 200,
+//             message: 'Deleted one user'
+//           });
+//     })
+//     .catch(error => {
+//         console.log('ERROR:', error);
+//     });
+// }
+
 module.exports = {
   getAllUsers: getAllUsers,
-  addUser: addUser
+  addUser: addUser,
+  // deleteUser: deleteUser
 };
