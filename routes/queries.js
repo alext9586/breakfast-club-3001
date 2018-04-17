@@ -17,7 +17,7 @@ var pgp = require('pg-promise')(options);
 var db = pgp(cn);
 
 function getAllMembers(req, res, next) {
-  db.any('select * from users')
+  db.any('select * from members')
     .then(function (data) {
       res.status(200)
         .json(data);
@@ -29,7 +29,7 @@ function getAllMembers(req, res, next) {
 
 
 function addMember(req, res, next) {
-  db.none('insert into users(firstname, lastname, slackusername, isactive)' +
+  db.none('insert into members(firstname, lastname, slackusername, isactive)' +
       'values(${firstName}, ${lastName}, ${slackUsername}, ${isActive})',
     req.body)
     .then(function () {
@@ -45,7 +45,7 @@ function addMember(req, res, next) {
 }
 
 function deleteMember(req, res, next) {
-  db.result('DELETE FROM users WHERE id = ${memberId}', req.body)
+  db.result('DELETE FROM members WHERE id = ${memberId}', req.body)
     .then(result => {
         // rowCount = number of rows affected by the query
         console.log(result.rowCount); // print how many records were deleted;

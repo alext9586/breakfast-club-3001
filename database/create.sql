@@ -5,29 +5,29 @@ CREATE DATABASE breakfastclub;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE users (
+CREATE TABLE members (
   ID uuid NOT NULL DEFAULT uuid_generate_v4(),
   created timestamp DEFAULT current_timestamp,
   firstname VARCHAR,
   lastname VARCHAR,
   slackusername VARCHAR,
   isactive BOOLEAN DEFAULT TRUE,
-  CONSTRAINT pk_users PRIMARY KEY (ID)
+  CONSTRAINT pk_members PRIMARY KEY (ID)
 );
 
-INSERT INTO users (firstname, lastname, slackusername)
+INSERT INTO members (firstname, lastname, slackusername)
   VALUES ('Test', 'User', 'testuser');
 
-CREATE TABLE userrotation (
+CREATE TABLE memberrotation (
   ID uuid NOT NULL DEFAULT uuid_generate_v4(),
-  userid uuid NOT NULL,
+  memberid uuid NOT NULL,
   rotationorder INTEGER NOT NULL,
-  CONSTRAINT pk_userrotation PRIMARY KEY (ID)
+  CONSTRAINT pk_memberrotation PRIMARY KEY (ID)
 );
 
 CREATE TABLE arrivallog (
   ID uuid NOT NULL DEFAULT uuid_generate_v4(),
-  userid uuid NOT NULL,
+  memberid uuid NOT NULL,
   arrivaltime timestamp DEFAULT current_timestamp,
   CONSTRAINT pk_arrivallog PRIMARY KEY (ID)
 );

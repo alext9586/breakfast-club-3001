@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { MemberTable } from './MemberTable';
 import { IMember, Member } from '../Models/Member';
+import { IRawMember } from '../Models/RawViewModels';
 
 interface IMemberTableState {
     response: object;
@@ -18,8 +19,8 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
 
     componentDidMount() {
         this.callApi()
-            .then(res => {
-                var membersList = res.map((member: any) => {
+            .then((res: IRawMember[]) => {
+                var membersList = res.map(member => {
                     return new Member(
                         member.id,
                         member.firstname,
