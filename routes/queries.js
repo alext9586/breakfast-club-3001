@@ -44,24 +44,24 @@ function addUser(req, res, next) {
     });
 }
 
-// function deleteUser(req, res, next) {
-//   db.result('DELETE FROM users WHERE uuid = $1', '${userId}')
-//     .then(result => {
-//         // rowCount = number of rows affected by the query
-//         console.log(result.rowCount); // print how many records were deleted;
-//         res.status(200)
-//           .json({
-//             status: 200,
-//             message: 'Deleted one user'
-//           });
-//     })
-//     .catch(error => {
-//         console.log('ERROR:', error);
-//     });
-// }
+function deleteUser(req, res, next) {
+  db.result('DELETE FROM users WHERE id = ${userId}', req.body)
+    .then(result => {
+        // rowCount = number of rows affected by the query
+        console.log(result.rowCount); // print how many records were deleted;
+        res.status(200)
+          .json({
+            status: 200,
+            message: 'Deleted one user'
+          });
+    })
+    .catch(error => {
+        console.log('ERROR:', error);
+    });
+}
 
 module.exports = {
   getAllUsers: getAllUsers,
   addUser: addUser,
-  // deleteUser: deleteUser
+  deleteUser: deleteUser
 };

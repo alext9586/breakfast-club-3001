@@ -67,4 +67,6 @@ router.get('/users', db.getAllUsers);
  */
 router.post('/users/add', db.addUser);
 
+router.delete('/users/delete', db.deleteUser);
+
 module.exports = router;
