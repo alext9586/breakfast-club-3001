@@ -19,6 +19,13 @@ export class DeleteMemberButton extends React.Component<IDeleteMemberButtonProps
         this.removeClick = this.removeClick.bind(this);
     }
 
+    // Fire a global event notifying refresh of data
+    private publishRefresh() {
+        var event = document.createEvent("Event");
+        event.initEvent("refresh", false, true); 
+        window.dispatchEvent(event);
+    }
+
     private async deleteMember(memberId: string) {
         var data = {
             memberId: memberId
@@ -41,7 +48,7 @@ export class DeleteMemberButton extends React.Component<IDeleteMemberButtonProps
     }
 
     private removeClick(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
-        this.deleteMember(memberId).then(response => {console.log(response)});
+        this.deleteMember(memberId).then(response => { console.log(response); this.publishRefresh(); });
     }
 
     render() {

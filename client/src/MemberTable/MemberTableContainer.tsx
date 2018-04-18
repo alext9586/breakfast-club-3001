@@ -18,6 +18,15 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
     }
 
     componentDidMount() {
+        window.addEventListener("refresh", () => this.refresh());
+        this.refresh();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("refresh", () => this.refresh());
+    }
+
+    private refresh() {
         this.callApi()
             .then((res: IRawMember[]) => {
                 var membersList = res.map(member => {

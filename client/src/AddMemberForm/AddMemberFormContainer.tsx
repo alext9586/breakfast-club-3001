@@ -24,6 +24,13 @@ export class AddMemberFormContainer extends React.Component<IAddMemberFormContai
     //     success: value && /Hello World/.test(value) ? "Thanks for entering 'Hello World'!" : null
     // });
 
+    // Fire a global event notifying refresh of data
+    private publishRefresh() {
+        var event = document.createEvent("Event");
+        event.initEvent("refresh", false, true); 
+        window.dispatchEvent(event);
+    }
+
     private async addMember(formValues: any) {        
         const response = await fetch('/api/members/add', {
             body: JSON.stringify(new Member(
@@ -50,9 +57,9 @@ export class AddMemberFormContainer extends React.Component<IAddMemberFormContai
 
     render() {
         return (
-            <Form onSubmit={submittedValues => this.addMember(submittedValues).then(response => {console.log(response)})}>
+            <Form onSubmit={submittedValues => this.addMember(submittedValues).then(response => { console.log(response); this.publishRefresh(); })}>
             {formApi => (
-                <form onSubmit={formApi.submitForm} id={this.state.formId}>
+                <form onSubmit={()=>{formApi.submitForm; formApi.resetAll;}} id={this.state.formId}>
                     <div>
                         <label htmlFor="firstName">First Name</label>
                         <Text field="firstName" id="firstName" />
