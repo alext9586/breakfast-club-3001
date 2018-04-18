@@ -27,7 +27,7 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
     }
 
     private refresh() {
-        this.callApi()
+        this.getAllMembers()
             .then((res: IRawMember[]) => {
                 var membersList = res.map(member => {
                     return new Member(
@@ -45,7 +45,14 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
             .catch(err => console.log(err));
     }
 
-    private async callApi() {
+    private deleteAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+        this.deleteMember(memberId).then(response => {
+            console.log(response);
+            this.refresh();
+        });
+    }
+
+    private async getAllMembers() {
         const response = await fetch('/api/members/all');
         const body = await response.json();
 
@@ -54,7 +61,28 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
         return body;
     }
 
+    private async deleteMember(memberId: string) {
+        var data = {
+            memberId: memberId
+        };
+        
+        const response = await fetch('/api/members/delete', {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        const body = await response.json();
+
+        if (response.status !== 200) throw Error(body.message);
+
+        return body;
+    }
+
     render() {
-        return (<MemberTable membersList={this.state.membersList} />);
+        return (<MemberTable membersList={this.state.membersList} deleteAction={this.deleteAction.bind(this)} />);
     }
 }

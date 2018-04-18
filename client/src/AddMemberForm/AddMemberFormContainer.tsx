@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Text } from 'react-form';
+import { Form, Text, FormFunctionProps } from 'react-form';
 import { Member } from '../Models/Member';
 
 interface IAddMemberFormContainerProps {
@@ -55,11 +55,20 @@ export class AddMemberFormContainer extends React.Component<IAddMemberFormContai
         return body;
     }
 
+    private formSubmit(e: React.FormEvent<HTMLFormElement>, formApi: FormFunctionProps) {
+        formApi.submitForm(e);
+        this.addMember(formApi.values).then(response => {
+            console.log(response);
+            this.publishRefresh();
+            formApi.resetAll();
+        });
+    }
+
     render() {
         return (
-            <Form onSubmit={submittedValues => this.addMember(submittedValues).then(response => { console.log(response); this.publishRefresh(); })}>
+            <Form>
             {formApi => (
-                <form onSubmit={()=>{formApi.submitForm; formApi.resetAll;}} id={this.state.formId}>
+                <form onSubmit={(e)=>{ this.formSubmit(e, formApi) }} id={this.state.formId}>
                     <div>
                         <label htmlFor="firstName">First Name</label>
                         <Text field="firstName" id="firstName" />

@@ -4,23 +4,17 @@ import { IMember } from '../Models/Member';
 
 interface IMemberTableRowProps {
     member: IMember;
+    deleteAction: Function;
 }
 
-interface IMemberTableRowState {
-    member: IMember;
-}
-
-export class MemberTableRow extends React.Component<IMemberTableRowProps, IMemberTableRowState> {
+export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
     constructor(props) {
         super(props);
-        
-        this.state = {
-            member: props.member
-        };
     }
 
     render() {
-        const member = this.state.member;
+        const member = this.props.member;
+        const deleteAction = this.props.deleteAction;
         return (
             <tr>
                 <td>
@@ -36,7 +30,7 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, IMembe
                     {member.isActive.toString()}
                 </td>
                 <td>
-                    <DeleteMemberButton memberId={member.id} />
+                    <DeleteMemberButton memberId={member.id} deleteAction={deleteAction} />
                 </td>
             </tr>
         );
