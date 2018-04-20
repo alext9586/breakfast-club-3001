@@ -67,6 +67,8 @@ router.get('/members/all', db.getAllMembers);
  */
 router.post('/members/add', db.addMember);
 
+router.post('/members/update', db.updateMember);
+
 router.delete('/members/delete', db.deleteMember);
 
 module.exports = router;

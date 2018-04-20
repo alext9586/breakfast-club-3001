@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MemberTable } from './MemberTable';
 import { IMember, Member } from '../Models/Member';
 import { IRawMember } from '../Models/RawViewModels';
+import { MemberTableHttpService } from './MemberTableHttpService';
 
 interface IMemberTableState {
     response: object;
@@ -11,6 +12,7 @@ interface IMemberTableState {
 export class MemberTableContainer extends React.Component<{}, IMemberTableState> {
     constructor(props: any){
         super(props);
+
         this.state = {
             response: [],
             membersList: []
@@ -27,7 +29,7 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
     }
 
     private refresh() {
-        this.getAllMembers()
+        MemberTableHttpService.getAllMembers()
             .then((res: IRawMember[]) => {
                 var membersList = res.map(member => {
                     return new Member(
@@ -45,44 +47,24 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
             .catch(err => console.log(err));
     }
 
-    private deleteAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
-        this.deleteMember(memberId).then(response => {
+    private updateMemberAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember) {
+        MemberTableHttpService.updateMember(member).then(response => {
             console.log(response);
             this.refresh();
         });
     }
 
-    private async getAllMembers() {
-        const response = await fetch('/api/members/all');
-        const body = await response.json();
-
-        if (response.status !== 200) throw Error(body.message);
-
-        return body;
-    }
-
-    private async deleteMember(memberId: string) {
-        var data = {
-            memberId: memberId
-        };
-        
-        const response = await fetch('/api/members/delete', {
-            method: 'DELETE',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
+    private deleteAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+        MemberTableHttpService.deleteMember(memberId).then(response => {
+            console.log(response);
+            this.refresh();
         });
-
-        const body = await response.json();
-
-        if (response.status !== 200) throw Error(body.message);
-
-        return body;
     }
 
     render() {
-        return (<MemberTable membersList={this.state.membersList} deleteAction={this.deleteAction.bind(this)} />);
+        return (<MemberTable
+                    membersList={this.state.membersList}
+                    updateAction={this.updateMemberAction.bind(this)}
+                    deleteAction={this.deleteAction.bind(this)} />);
     }
 }
