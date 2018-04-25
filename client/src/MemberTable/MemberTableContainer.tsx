@@ -2,8 +2,9 @@ import * as React from 'react';
 import { MemberTable } from './MemberTable';
 import { IMember, Member } from '../Models/Member';
 import { IRawMember } from '../Models/RawViewModels';
-import { MemberTableHttpService } from './MemberTableHttpService';
+import { HttpService } from '../Services/HttpService';
 import { RotateButton } from './RotateButton';
+import { IMemberTableActions, MemberTableActions } from './MemberTableActions';
 
 interface IMemberTableState {
     response: object;
@@ -30,7 +31,7 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
     }
 
     private refresh() {
-        MemberTableHttpService.getAllMembers()
+        HttpService.getAllMembers()
             .then((res: IRawMember[]) => {
                 var membersList = res.map(member => {
                     return new Member(
@@ -58,36 +59,39 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
     }
 
     private updateMemberAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember) {
-        MemberTableHttpService.updateMember(member).then(response => {
+        HttpService.updateMember(member).then(response => {
             console.log(response);
             this.refresh();
         });
     }
 
     private deleteAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
-        MemberTableHttpService.deleteMember(memberId).then(response => {
+        HttpService.deleteMember(memberId).then(response => {
             console.log(response);
             this.refresh();
         });
     }
 
     private rotateAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
-        MemberTableHttpService.rotate().then(response => {
+        HttpService.rotate().then(response => {
             console.log(response);
             this.refresh();
         });
     }
 
     render() {
+        const actions = MemberTableActions.create(
+            this.memberUpAction.bind(this),
+            this.memberDownAction.bind(this),
+            this.updateMemberAction.bind(this),
+            this.deleteAction.bind(this));
+
         return (
             <div>
                 <RotateButton rotateAction={this.rotateAction.bind(this)} />
                 <MemberTable
                     membersList={this.state.membersList}
-                    upAction={this.memberUpAction.bind(this)}
-                    downAction={this.memberDownAction.bind(this)}
-                    updateAction={this.updateMemberAction.bind(this)}
-                    deleteAction={this.deleteAction.bind(this)} />
+                    actions={actions} />
             </div>);
     }
 }

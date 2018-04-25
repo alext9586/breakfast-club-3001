@@ -3,13 +3,11 @@ import { DeleteMemberButton } from './DeleteMemberButton';
 import { IMember } from '../Models/Member';
 import { MemberActiveToggle } from './MemberActiveToggle';
 import { UpDownButtons } from './UpDownButtons';
+import { IMemberTableActions } from './MemberTableActions';
 
 interface IMemberTableRowProps {
     member: IMember;
-    upAction: Function;
-    downAction: Function;
-    updateAction: Function;
-    deleteAction: Function;
+    actions: IMemberTableActions;
 }
 
 export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
@@ -19,14 +17,11 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
 
     render() {
         const member = this.props.member;
-        const upAction = this.props.upAction;
-        const downAction = this.props.downAction;
-        const updateAction = this.props.updateAction;
-        const deleteAction = this.props.deleteAction;
+        const actions = this.props.actions;
         return (
             <tr>
                 <td>
-                    <UpDownButtons upAction={upAction} downAction={downAction} memberId={member.id} />
+                    <UpDownButtons upAction={actions.memberUp} downAction={actions.memberDown} memberId={member.id} />
                 </td>
                 <td>
                     {member.rotationOrder}
@@ -41,10 +36,10 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
                     {member.slackUsername}
                 </td>
                 <td>
-                    <MemberActiveToggle member={member} updateAction={updateAction} />
+                    <MemberActiveToggle member={member} updateAction={actions.updateMember} />
                 </td>
                 <td>
-                    <DeleteMemberButton memberId={member.id} deleteAction={deleteAction} />
+                    <DeleteMemberButton memberId={member.id} deleteAction={actions.deleteMember} />
                 </td>
             </tr>
         );

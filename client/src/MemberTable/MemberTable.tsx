@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { MemberTableRow } from './MemberTableRow';
 import { IMember } from '../Models/Member';
+import { IMemberTableActions } from './MemberTableActions';
 
 interface IMemberTableProps {
     membersList: IMember[];
-    upAction: Function;
-    downAction: Function;
-    updateAction: Function;
-    deleteAction: Function;
+    actions: IMemberTableActions;
 }
 
 interface IMemberTableState {
@@ -33,18 +31,12 @@ export class MemberTable extends React.Component<IMemberTableProps, IMemberTable
     }
 
     render() {
-        var upAction = this.props.upAction;
-        var downAction = this.props.downAction;
-        var deleteAction = this.props.deleteAction;
-        var updateAction = this.props.updateAction;
-        var membersRows = this.state.membersList.map(function(item: IMember) {
+        const actions = this.props.actions;
+        const membersRows = this.state.membersList.map((item: IMember) => {
             return (<MemberTableRow
                 key={item.id}
                 member={item}
-                upAction={upAction}
-                downAction={downAction}
-                updateAction={updateAction}
-                deleteAction={deleteAction} />);
+                actions={actions} />);
         });
 
         return (

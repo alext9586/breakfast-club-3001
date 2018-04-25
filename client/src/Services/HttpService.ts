@@ -1,13 +1,13 @@
 import { IMember } from "../Models/Member";
 
-export interface IMemberTableHttpService {
+export interface IHttpService {
     getAllMembers();
     updateMember(member: IMember);
     deleteMember(memberId: string);
     rotate();
 }
 
-export class MemberTableHttpService {
+export class HttpService {
     private static async waitForResponse(response: Response) {
         const body = await response.json();
 
