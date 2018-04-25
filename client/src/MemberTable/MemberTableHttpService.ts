@@ -4,6 +4,7 @@ export interface IMemberTableHttpService {
     getAllMembers();
     updateMember(member: IMember);
     deleteMember(memberId: string);
+    rotate();
 }
 
 export class MemberTableHttpService {
@@ -46,6 +47,18 @@ export class MemberTableHttpService {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)
+        });
+
+        return this.waitForResponse(response);
+    }
+
+    public static async rotate() {
+        const response = await fetch('/api/members/rotate', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            }
         });
 
         return this.waitForResponse(response);

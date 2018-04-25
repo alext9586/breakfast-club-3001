@@ -101,9 +101,36 @@ function deleteMember(req, res, next) {
     });
 }
 
+function rotateMembers() {
+  return db.task("rotateMembers", t => {
+    return db.one("select coalesce(max(rotationorder), 0)+1 maxrotvalue from memberrotation").then(maxOrder => {
+      return db.none("update memberrotation set rotationorder=$1 where rotationorder=1", [maxOrder.maxrotvalue]).then(() => {
+        let innerSelect = "select * from memberrotation";
+        let query = `update memberrotation set rotationorder=x.rotationorder-1 from (${innerSelect}) x where x.id = memberrotation.id`;
+        return db.none(query);
+      });
+    });
+  });
+}
+
+function rotate(req, res, next) {
+  rotateMembers()
+    .then(() => {
+      res.status(200)
+        .json({
+          status: 200,
+          message: "Rotated members"
+        });
+    })
+    .catch(error => {
+      console.log("ERROR:", error);
+    });
+}
+
 module.exports = {
   getAllMembers: getAllMembers,
   addMember: addMember,
   updateMember: updateMember,
-  deleteMember: deleteMember
+  deleteMember: deleteMember,
+  rotate: rotate
 };

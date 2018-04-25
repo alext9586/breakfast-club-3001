@@ -11,4 +11,6 @@ router.post('/members/update', db.updateMember);
 
 router.delete('/members/delete', db.deleteMember);
 
+router.post('/members/rotate', db.rotate);
+
 module.exports = router;

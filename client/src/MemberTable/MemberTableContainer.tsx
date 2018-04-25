@@ -3,6 +3,7 @@ import { MemberTable } from './MemberTable';
 import { IMember, Member } from '../Models/Member';
 import { IRawMember } from '../Models/RawViewModels';
 import { MemberTableHttpService } from './MemberTableHttpService';
+import { RotateButton } from './RotateButton';
 
 interface IMemberTableState {
     response: object;
@@ -62,10 +63,21 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
         });
     }
 
+    private rotateAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+        MemberTableHttpService.rotate().then(response => {
+            console.log(response);
+            this.refresh();
+        });
+    }
+
     render() {
-        return (<MemberTable
+        return (
+            <div>
+                <RotateButton rotateAction={this.rotateAction.bind(this)} />
+                <MemberTable
                     membersList={this.state.membersList}
                     updateAction={this.updateMemberAction.bind(this)}
-                    deleteAction={this.deleteAction.bind(this)} />);
+                    deleteAction={this.deleteAction.bind(this)} />
+            </div>);
     }
 }
