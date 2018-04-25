@@ -37,6 +37,7 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
                         member.firstname,
                         member.lastname,
                         member.slackusername,
+                        member.rotationorder,
                         member.isactive);
                 });
                 this.setState({

@@ -3,5 +3,6 @@ export interface IRawMember {
     firstname: string;
     lastname: string;
     slackusername: string;
+    rotationorder: number;
     isactive: boolean;
 }

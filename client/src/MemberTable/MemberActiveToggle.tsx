@@ -28,6 +28,7 @@ export class MemberActiveToggle extends React.Component<IMemberActiveToggleProps
             this.props.member.firstName,
             this.props.member.lastName,
             this.props.member.slackUsername,
+            this.props.member.rotationOrder,
             value
         );
         

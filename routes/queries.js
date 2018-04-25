@@ -17,7 +17,7 @@ var pgp = require("pg-promise")(options);
 var db = pgp(cn);
 
 function getAllMembers(req, res, next) {
-  db.any("select * from members order by created")
+  db.any("select * from members m inner join memberrotation mr on m.id = mr.memberid order by created")
     .then(function (data) {
       res.status(200)
         .json(data);
@@ -27,11 +27,19 @@ function getAllMembers(req, res, next) {
     });
 }
 
+function insertMember(req) {
+  return db.one("insert into members(firstname, lastname, slackusername, isactive)" +
+  "values(${firstName}, ${lastName}, ${slackUsername}, ${isActive}) returning id",
+  req.body).then(user => {
+    let rotationOrderQuery = "select coalesce(max(rotationorder), 0)+1 from memberrotation";
+    return db.none("insert into memberrotation(memberid, rotationorder) values($1, $2)", [user.id, 0]).then(q => {
+      return db.none("update memberrotation set rotationorder=(" + rotationOrderQuery + ") where memberid=$1", [user.id]);
+    });
+  });
+}
 
 function addMember(req, res, next) {
-  db.none("insert into members(firstname, lastname, slackusername, isactive)" +
-      "values(${firstName}, ${lastName}, ${slackUsername}, ${isActive})",
-    req.body)
+  insertMember(req)
     .then(function () {
       res.status(200)
         .json({
@@ -74,7 +82,7 @@ function updateMember(req, res, next) {
 }
 
 function deleteMember(req, res, next) {
-  db.result("DELETE FROM members WHERE id = ${memberId}", req.body)
+  db.result("DELETE FROM members WHERE id=${memberId}", req.body)
     .then(result => {
         // rowCount = number of rows affected by the query
         console.log(result.rowCount); // print how many records were deleted;

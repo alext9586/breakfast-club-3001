@@ -21,6 +21,9 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
         return (
             <tr>
                 <td>
+                    {member.rotationOrder}
+                </td>
+                <td>
                     {member.firstName}
                 </td>
                 <td>

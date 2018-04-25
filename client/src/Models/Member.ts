@@ -3,6 +3,7 @@ export interface IMember {
     firstName: string;
     lastName: string;
     slackUsername: string;
+    rotationOrder: number;
     isActive: boolean;
 }
 
@@ -12,6 +13,7 @@ export class Member implements IMember {
         public firstName: string = "",
         public lastName: string = "",
         public slackUsername: string = "",
+        public rotationOrder: number = -1,
         public isActive: boolean = true) {
     }
 }

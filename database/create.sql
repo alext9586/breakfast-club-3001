@@ -15,9 +15,6 @@ CREATE TABLE members (
   CONSTRAINT pk_members PRIMARY KEY (ID)
 );
 
-INSERT INTO members (firstname, lastname, slackusername)
-  VALUES ('Test', 'User', 'testuser');
-
 CREATE TABLE memberrotation (
   ID uuid NOT NULL DEFAULT uuid_generate_v4(),
   memberid uuid NOT NULL,
