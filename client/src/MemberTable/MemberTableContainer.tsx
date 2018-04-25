@@ -49,6 +49,14 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
             .catch(err => console.log(err));
     }
 
+    private memberUpAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+        console.info("Up Pressed", memberId);
+    }
+
+    private memberDownAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+        console.info("Down Pressed", memberId);
+    }
+
     private updateMemberAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember) {
         MemberTableHttpService.updateMember(member).then(response => {
             console.log(response);
@@ -76,6 +84,8 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
                 <RotateButton rotateAction={this.rotateAction.bind(this)} />
                 <MemberTable
                     membersList={this.state.membersList}
+                    upAction={this.memberUpAction.bind(this)}
+                    downAction={this.memberDownAction.bind(this)}
                     updateAction={this.updateMemberAction.bind(this)}
                     deleteAction={this.deleteAction.bind(this)} />
             </div>);
