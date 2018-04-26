@@ -43,6 +43,7 @@ export class MemberTable extends React.Component<IMemberTableProps, IMemberTable
             <table>
                 <thead>
                     <tr>
+                        <td></td>
                         <td>Rotation</td>
                         <td>First Name</td>
                         <td>Last Name</td>

@@ -127,13 +127,25 @@ function rotate(req, res, next) {
     });
 }
 
-function saveList(req, res, next) {
-  console.log(req.body.membersList);
-  res.status(200)
-    .json({
-      status: 200,
-      message: req.body.membersList
+function saveNewOrder(membersList) {
+  return db.task("saveNewOrder", t => {
+    return t.none("delete from memberrotation").then(() => {
+      membersList.forEach(member => {
+        t.none("insert into memberrotation(memberid, rotationorder) values($1, $2)", [member.id, member.rotationOrder])
+      });
     });
+  });
+}
+
+function saveList(req, res, next) {
+  debugger;
+  saveNewOrder(req.body.membersList).then(() => {
+    res.status(200)
+      .json({
+        status: 200,
+        message: "Saved new order"
+      });
+  });
 }
 
 module.exports = {
