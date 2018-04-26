@@ -18,7 +18,7 @@ var db = pgp(cn);
 
 function getAllMembers(req, res, next) {
   db.any("select m.id, m.firstname, m.lastname, m.slackusername, mr.rotationorder, m.isactive " +
-    "from members m inner join memberrotation mr on m.id = mr.memberid order by rotationorder")
+    "from members m left join memberrotation mr on m.id = mr.memberid order by rotationorder")
     .then(function (data) {
       res.status(200)
         .json(data);
@@ -30,12 +30,12 @@ function getAllMembers(req, res, next) {
 
 function insertMember(req) {
   return db.task("insertMember", t => {
-    return db.one("insert into members(firstname, lastname, slackusername, isactive)" +
+    return t.one("insert into members(firstname, lastname, slackusername, isactive)" +
     "values(${firstName}, ${lastName}, ${slackUsername}, ${isActive}) returning id",
     req.body).then(user => {
       let rotationOrderQuery = "select coalesce(max(rotationorder), 0)+1 from memberrotation";
-      return db.none("insert into memberrotation(memberid, rotationorder) values($1, $2)", [user.id, 0]).then(q => {
-        return db.none("update memberrotation set rotationorder=(" + rotationOrderQuery + ") where memberid=$1", [user.id]);
+      return t.none("insert into memberrotation(memberid, rotationorder) values($1, $2)", [user.id, 0]).then(q => {
+        return t.none("update memberrotation set rotationorder=(" + rotationOrderQuery + ") where memberid=$1", [user.id]);
       });
     });
   });
@@ -73,7 +73,6 @@ function updateMember(req, res, next) {
 
   db.result(query, queryParams)
     .then(result => {
-      console.log(result);
       res.status(200)
         .json({
           status: 200,
@@ -85,11 +84,17 @@ function updateMember(req, res, next) {
       });
 }
 
+function deleteFromMembersAndRotation(memberId) {
+  return db.task("deleteMember", t => {
+    return t.none("DELETE FROM members WHERE id=$1", [memberId]).then(() => {
+      return t.none("DELETE FROM memberrotation WHERE memberid=$1", [memberId]);
+    });
+  });
+}
+
 function deleteMember(req, res, next) {
-  db.result("DELETE FROM members WHERE id=${memberId}", req.body)
-    .then(result => {
-        // rowCount = number of rows affected by the query
-        console.log(result.rowCount); // print how many records were deleted;
+  deleteFromMembersAndRotation(req.body.memberId)
+    .then(() => {
         res.status(200)
           .json({
             status: 200,
@@ -103,11 +108,11 @@ function deleteMember(req, res, next) {
 
 function rotateMembers() {
   return db.task("rotateMembers", t => {
-    return db.one("select coalesce(max(rotationorder), 0)+1 maxrotvalue from memberrotation").then(maxOrder => {
-      return db.none("update memberrotation set rotationorder=$1 where rotationorder=1", [maxOrder.maxrotvalue]).then(() => {
+    return t.one("select coalesce(max(rotationorder), 0)+1 maxrotvalue from memberrotation").then(maxOrder => {
+      return t.none("update memberrotation set rotationorder=$1 where rotationorder=1", [maxOrder.maxrotvalue]).then(() => {
         let innerSelect = "select * from memberrotation";
         let query = `update memberrotation set rotationorder=x.rotationorder-1 from (${innerSelect}) x where x.id = memberrotation.id`;
-        return db.none(query);
+        return t.none(query);
       });
     });
   });
@@ -131,14 +136,13 @@ function saveNewOrder(membersList) {
   return db.task("saveNewOrder", t => {
     return t.none("delete from memberrotation").then(() => {
       membersList.forEach(member => {
-        t.none("insert into memberrotation(memberid, rotationorder) values($1, $2)", [member.id, member.rotationOrder])
+        t.none("insert into memberrotation(memberid, rotationorder) values($1, $2)", [member.id, member.rotationOrder]);
       });
     });
   });
 }
 
 function saveList(req, res, next) {
-  debugger;
   saveNewOrder(req.body.membersList).then(() => {
     res.status(200)
       .json({
