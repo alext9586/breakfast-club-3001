@@ -5,6 +5,7 @@ export interface IHttpService {
     updateMember(member: IMember);
     deleteMember(memberId: string);
     rotate();
+    saveList(membersList: IMember[]);
 }
 
 export class HttpService {
@@ -59,6 +60,23 @@ export class HttpService {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             }
+        });
+
+        return this.waitForResponse(response);
+    }
+
+    public static async saveList(membersList: IMember[]) {
+        var data = {
+            membersList: membersList
+        };
+
+        const response = await fetch('/api/members/saveList', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
         });
 
         return this.waitForResponse(response);

@@ -13,4 +13,6 @@ router.delete('/members/delete', db.deleteMember);
 
 router.post('/members/rotate', db.rotate);
 
+router.post('/members/saveList', db.saveList);
+
 module.exports = router;

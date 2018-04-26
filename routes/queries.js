@@ -127,10 +127,20 @@ function rotate(req, res, next) {
     });
 }
 
+function saveList(req, res, next) {
+  console.log(req.body.membersList);
+  res.status(200)
+    .json({
+      status: 200,
+      message: req.body.membersList
+    });
+}
+
 module.exports = {
   getAllMembers: getAllMembers,
   addMember: addMember,
   updateMember: updateMember,
   deleteMember: deleteMember,
-  rotate: rotate
+  rotate: rotate,
+  saveList: saveList
 };

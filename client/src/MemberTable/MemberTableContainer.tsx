@@ -5,6 +5,7 @@ import { IRawMember } from '../Models/RawViewModels';
 import { HttpService } from '../Services/HttpService';
 import { RotateButton } from './RotateButton';
 import { IMemberTableActions, MemberTableActions } from './MemberTableActions';
+import { SaveMembersListButton } from './SaveMembersListButton';
 
 interface IMemberTableState {
     response: object;
@@ -79,6 +80,13 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
         });
     }
 
+    private saveAction(e: React.MouseEvent<HTMLButtonElement>) {
+        HttpService.saveList(this.state.membersList).then(response => {
+            console.log(response);
+            this.refresh();
+        });
+    }
+
     render() {
         const actions = MemberTableActions.create(
             this.memberUpAction.bind(this),
@@ -88,6 +96,7 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
 
         return (
             <div>
+                <SaveMembersListButton saveAction={this.saveAction.bind(this)} />
                 <RotateButton rotateAction={this.rotateAction.bind(this)} />
                 <MemberTable
                     membersList={this.state.membersList}
