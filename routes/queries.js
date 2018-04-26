@@ -84,10 +84,21 @@ function updateMember(req, res, next) {
       });
 }
 
+function normalizeMemberRotation() {
+  db.any("select m.id, mr.rotationorder from members m left join memberrotation mr on m.id = mr.memberid order by rotationorder")
+    .then(membersList => {
+      membersList.forEach((member, index) => {
+        db.none("update memberrotation set rotationorder=$1 where memberid=$2", [index + 1, member.id]);
+      });
+    });
+}
+
 function deleteFromMembersAndRotation(memberId) {
   return db.task("deleteMember", t => {
     return t.none("DELETE FROM members WHERE id=$1", [memberId]).then(() => {
-      return t.none("DELETE FROM memberrotation WHERE memberid=$1", [memberId]);
+      return t.none("DELETE FROM memberrotation WHERE memberid=$1", [memberId]).then(() => {
+        normalizeMemberRotation();
+      })
     });
   });
 }
