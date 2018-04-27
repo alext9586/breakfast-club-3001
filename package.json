@@ -10,20 +10,19 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
-    "dotenv": "^5.0.1",
-    "express": "^4.16.3",
-    "pg-promise": "^8.2.3",
-    "yarn": "^1.6.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
     "http-errors": "~1.6.2",
-    "jade": "~1.11.0",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "pg-promise": "^8.4.0",
+    "pug": "^2.0.3"
   },
   "devDependencies": {
-    "@types/node": "^9.6.4",
+    "@types/node": "^9.6.7",
     "concurrently": "^3.5.0",
     "nodemon": "^1.17.3",
-    "typescript": "^2.8.1"
+    "typescript": "^2.8.3"
   }
 }
