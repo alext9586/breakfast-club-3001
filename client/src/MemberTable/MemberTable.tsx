@@ -32,7 +32,7 @@ export class MemberTable extends React.Component<IMemberTableProps, IMemberTable
 
     render() {
         const actions = this.props.actions;
-        const membersRows = this.state.membersList.map((item: IMember) => {
+        const membersRows = this.state.membersList.map(item => {
             return (<MemberTableRow
                 key={item.id}
                 member={item}

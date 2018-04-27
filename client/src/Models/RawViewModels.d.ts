@@ -9,7 +9,8 @@ export interface IRawMember {
 
 export interface IRawArrival {
     id: string;
-    member: IRawMember;
-    when: Date;
+    memberid: string;
+    membername: string;
+    arrivaltime: string;
     notes: string;
 }

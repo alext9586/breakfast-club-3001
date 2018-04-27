@@ -29,9 +29,9 @@ export class ArrivalTable extends React.Component<IArrivalTableProps, IArrivalTa
 
     render() {
         const membersRows = this.state.arrivalLog.map((arrivalEntry) => {
-            return (<tr>
-                <td>{arrivalEntry.member.slackUsername}</td>
-                <td>{arrivalEntry.when}</td>
+            return (<tr key={arrivalEntry.id}>
+                <td>{arrivalEntry.memberName}</td>
+                <td>{arrivalEntry.arrivalTime}</td>
                 <td>{arrivalEntry.notes}</td>
                 </tr>);
         });
@@ -40,7 +40,7 @@ export class ArrivalTable extends React.Component<IArrivalTableProps, IArrivalTa
             <table>
                 <thead>
                     <tr>
-                        <td>Slack Username</td>
+                        <td>Person</td>
                         <td>Arrival Time</td>
                         <td>Notes</td>
                     </tr>

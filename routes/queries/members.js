@@ -1,20 +1,4 @@
-var promise = require("bluebird");
-
-var options = {
-  // Initialization Options
-  promiseLib: promise
-};
-
-var cn = {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: "breakfastclub",
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS
-};
-
-var pgp = require("pg-promise")(options);
-var db = pgp(cn);
+const db = require("./dbinit").db;
 
 function getAllMembers(req, res, next) {
   db.any("select m.id, m.firstname, m.lastname, m.slackusername, mr.rotationorder, m.isactive " +

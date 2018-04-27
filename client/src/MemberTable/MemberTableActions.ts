@@ -2,7 +2,8 @@ export interface IMemberTableActions {
     memberUp: Function,
     memberDown: Function,
     updateMember: Function,
-    deleteMember: Function
+    deleteMember: Function,
+    addArrivalEntry: Function
 }
 
 export class MemberTableActions {
@@ -10,12 +11,14 @@ export class MemberTableActions {
         memberUp: Function,
         memberDown: Function,
         updateMember: Function,
-        deleteMember: Function): IMemberTableActions {
+        deleteMember: Function,
+        addArrivalEntry: Function): IMemberTableActions {
         return <IMemberTableActions>{
             memberUp: memberUp,
             memberDown: memberDown,
             updateMember: updateMember,
-            deleteMember: deleteMember
+            deleteMember: deleteMember,
+            addArrivalEntry: addArrivalEntry
         };
     }
 }

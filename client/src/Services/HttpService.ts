@@ -6,6 +6,9 @@ export interface IHttpService {
     deleteMember(memberId: string);
     rotate();
     saveList(membersList: IMember[]);
+
+    getAllArrivals();
+    addArrival(memberId: string);
 }
 
 export class HttpService {
@@ -71,6 +74,33 @@ export class HttpService {
         };
 
         const response = await fetch('/api/members/saveList', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        return this.waitForResponse(response);
+    }
+
+    // ----------------------------------------------------------------------------
+
+    public static async getAllArrivals() {
+        const response = await fetch('/api/arrivals/all');
+        
+        return this.waitForResponse(response);
+    }
+
+    public static async addArrival(memberId: string) {
+        var data = {
+            memberId: memberId,
+            arrivalTime: new Date(),
+            notes: "tacos"
+        };
+
+        const response = await fetch('/api/arrivals/add', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',

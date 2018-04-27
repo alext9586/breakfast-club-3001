@@ -146,12 +146,19 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
         });
     }
 
+    private addArrivalEntry(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+        HttpService.addArrival(memberId).then(response => {
+            console.log(response);
+        });
+    }
+
     render() {
         const actions = MemberTableActions.create(
             this.memberUpAction.bind(this),
             this.memberDownAction.bind(this),
             this.updateMemberAction.bind(this),
-            this.deleteAction.bind(this));
+            this.deleteAction.bind(this),
+            this.addArrivalEntry.bind(this));
 
         return (
             <div>

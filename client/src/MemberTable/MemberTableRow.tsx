@@ -15,9 +15,21 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
         super(props);
     }
 
+    private renderAddButton() {
+        const member = this.props.member;
+        const actions = this.props.actions;        
+
+        if(member.rotationOrder === 1) {
+            return (<button type="button" onClick={(e) => actions.addArrivalEntry(e, member.id)}>Add Arrival</button>);
+        } else {
+            return null;
+        }
+    }
+
     render() {
         const member = this.props.member;
         const actions = this.props.actions;
+
         return (
             <tr>
                 <td>
@@ -40,6 +52,7 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
                 </td>
                 <td>
                     <DeleteMemberButton memberId={member.id} deleteAction={actions.deleteMember} />
+                    { this.renderAddButton() }
                 </td>
             </tr>
         );

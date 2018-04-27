@@ -3,23 +3,25 @@ import { IRawArrival } from "./RawViewModels";
 
 export interface IArrival {
     id: string;
-    member: IMember;
-    when: Date;
+    memberId: string;
+    memberName: string;
+    arrivalTime: string;
     notes: string;
 }
 
 export class Arrival implements IArrival {
     constructor(
         public id: string = "",
-        public member: IMember,
-        public when: Date = new Date(),
+        public memberId: string = "",
+        public memberName: string = "",
+        public arrivalTime: string = "",
         public notes: string = "") {
     }
 }
 
 export class ArrivalConverter {
     public static fromRawArrival(raw: IRawArrival) {
-        let member = MemberConverter.fromRawMember(raw.member);
-        return new Arrival(raw.id, member, raw.when, raw.notes);
+        const time = new Date(raw.arrivaltime).toLocaleString();
+        return new Arrival(raw.id, raw.memberid, raw.membername, time, raw.notes);
     }
 }
