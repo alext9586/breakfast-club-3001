@@ -6,3 +6,10 @@ export interface IRawMember {
     rotationorder: number;
     isactive: boolean;
 }
+
+export interface IRawArrival {
+    id: string;
+    member: IRawMember;
+    when: Date;
+    notes: string;
+}

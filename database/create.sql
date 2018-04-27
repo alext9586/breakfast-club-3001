@@ -26,5 +26,6 @@ CREATE TABLE arrivallog (
   ID uuid NOT NULL DEFAULT uuid_generate_v4(),
   memberid uuid NOT NULL,
   arrivaltime timestamp DEFAULT current_timestamp,
+  notes VARCHAR,
   CONSTRAINT pk_arrivallog PRIMARY KEY (ID)
 );

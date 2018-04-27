@@ -4,6 +4,7 @@ import { MemberTableContainer } from './MemberTable/MemberTableContainer';
 import { AddMemberFormContainer } from './AddMemberForm/AddMemberFormContainer';
 
 import logo from './logo.svg';
+import { ArrivalTableContainer } from './ArrivalTable/ArrivalTableContainer';
 
 class App extends React.Component {
   public render() {
@@ -15,6 +16,7 @@ class App extends React.Component {
         </header>
         <MemberTableContainer />
         <AddMemberFormContainer formId="addMemberForm" />
+        <ArrivalTableContainer />
       </div>
     );
   }
