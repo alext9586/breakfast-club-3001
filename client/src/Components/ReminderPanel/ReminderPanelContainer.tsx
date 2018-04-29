@@ -22,7 +22,7 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
     static getDerivedStateFromProps(nextProps: IReminderPanelContainerProps, prevState: IReminderPanelContainerState) {
         if(nextProps.membersList !== prevState.membersList) {
             return {
-                membersList: nextProps.membersList
+                membersList: nextProps.membersList.filter(member => member.isActive)
             }
         }
 
@@ -59,7 +59,7 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
         
         if(this.state.membersList && this.state.membersList[0]) {
             rows = this.state.membersList.map(member => {
-                return (<div key={member.id}>{member.slackUsername}</div>);
+                return (<div key={member.id}>{member.firstName} {member.lastName}</div>);
             });
 
             rows.splice(0,0, (<div key="memberReminder">\remind @here "{this.getMemberReminderText()}</div>) );
