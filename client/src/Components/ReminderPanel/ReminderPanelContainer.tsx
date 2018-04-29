@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { IMember } from 'src/Models/Member';
+import { ReminderCard } from './ReminderCard';
 
 interface IReminderPanelContainerProps {
     membersList: IMember[];
@@ -10,7 +11,7 @@ interface IReminderPanelContainerState {
 }
 
 export class ReminderPanelContainer extends React.Component<IReminderPanelContainerProps, IReminderPanelContainerState> {
-    constructor(props: any){
+    constructor(props: IReminderPanelContainerProps){
         super(props);
 
         this.state = {
@@ -41,19 +42,6 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
         return reminder;
     }
 
-    private renderCard(title: string, panel: JSX.Element) {
-        return (
-            <div className="card">
-                <div className="card-body">
-                    <h5 className="card-title">{title}</h5>
-                    <div className="card-text">
-                        {panel}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
     private renderMemberReminder(): JSX.Element {
         let reminder = "";
         if(this.state.membersList && this.state.membersList[0]) {
@@ -63,7 +51,7 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
         }
 
         let element = (<span>{reminder}</span>);
-        return this.renderCard("Member Reminder", element);
+        return (<ReminderCard cardId="memberReminder" title="Member Reminder" panel={element} />);
     }
 
     private renderChannelReminder(): JSX.Element {
@@ -79,7 +67,7 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
         }
 
         let element = (<span>{rows}</span>);
-        return this.renderCard("Channel Reminder", element);
+        return (<ReminderCard cardId="channelReminder" title="Channel Reminder" panel={element} />);
     }
 
     render() {

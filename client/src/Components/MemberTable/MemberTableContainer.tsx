@@ -155,10 +155,10 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableContai
         return (
             <div>
                 <div className="row">
-                    <div className="col-1">
+                    <div className="col-md-2">
                         <RotateButton rotateAction={this.rotateAction.bind(this)} />
                     </div>
-                    <div className="col">
+                    <div className="col-md-10">
                         <ReminderPanelContainer membersList={this.state.membersList} />
                     </div>
                 </div>

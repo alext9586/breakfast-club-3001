@@ -35,8 +35,7 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
     }
 
     render() {
-        const member = this.props.member;
-        const actions = this.props.actions;
+        const {member, actions} = this.props;
 
         return (
             <tr>
