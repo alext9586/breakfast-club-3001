@@ -6,13 +6,14 @@ import { HttpService } from '../Services/HttpService';
 import { RotateButton } from './RotateButton';
 import { IMemberTableActions, MemberTableActions } from './MemberTableActions';
 import { SaveMembersListButton } from './SaveMembersListButton';
+import { ReminderPanelContainer } from '../ReminderPanel/ReminderPanelContainer';
 
-interface IMemberTableState {
+interface IMemberTableContainerState {
     response: object;
     membersList: IMember[];
 }
 
-export class MemberTableContainer extends React.Component<{}, IMemberTableState> {
+export class MemberTableContainer extends React.Component<{}, IMemberTableContainerState> {
     constructor(props: any){
         super(props);
 
@@ -89,12 +90,10 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
         });
 
         membersList.sort(this.sortByRotationOrder);
-        
-        this.setState((prevState) => {
-            return {
-                response: prevState.response,
-                membersList: membersList
-            }
+
+        HttpService.saveList(membersList).then(response => {
+            console.log(response);
+            this.refresh();
         });
     }
 
@@ -118,12 +117,12 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
         });
     }
 
-    private saveAction(e: React.MouseEvent<HTMLButtonElement>) {
-        HttpService.saveList(this.state.membersList).then(response => {
-            console.log(response);
-            this.refresh();
-        });
-    }
+    // private saveAction(e: React.MouseEvent<HTMLButtonElement>) {
+    //     HttpService.saveList(this.state.membersList).then(response => {
+    //         console.log(response);
+    //         this.refresh();
+    //     });
+    // }
 
     private updateMemberAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember) {
         HttpService.updateMember(member).then(response => {
@@ -162,8 +161,8 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
 
         return (
             <div className="row">
-                <SaveMembersListButton saveAction={this.saveAction.bind(this)} />
                 <RotateButton rotateAction={this.rotateAction.bind(this)} />
+                <ReminderPanelContainer membersList={this.state.membersList} />
                 <MemberTable
                     membersList={this.state.membersList}
                     actions={actions} />
