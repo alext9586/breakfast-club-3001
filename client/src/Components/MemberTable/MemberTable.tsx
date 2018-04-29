@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MemberTableRow } from './MemberTableRow';
-import { IMember } from '../Models/Member';
+import { IMember } from 'src/Models/Member';
 import { IMemberTableActions } from './MemberTableActions';
 
 interface IMemberTableProps {
@@ -44,11 +44,10 @@ export class MemberTable extends React.Component<IMemberTableProps, IMemberTable
                 <thead>
                     <tr>
                         <td></td>
-                        <td>Rotation</td>
-                        <td>First Name</td>
-                        <td>Last Name</td>
+                        <td>Order</td>
+                        <td>Name</td>
                         <td>Slack Username</td>
-                        <td>Is Active</td>
+                        <td>Active</td>
                         <td></td>
                     </tr>
                 </thead>

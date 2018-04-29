@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IMember } from '../Models/Member';
+import { IMember } from 'src/Models/Member';
 
 interface IReminderPanelContainerProps {
     membersList: IMember[];

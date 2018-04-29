@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IArrival } from '../Models/Arrival';
+import { IArrival } from 'src/Models/Arrival';
 
 interface IArrivalTableProps {
     arrivalLog: IArrival[];
@@ -40,7 +40,7 @@ export class ArrivalTable extends React.Component<IArrivalTableProps, IArrivalTa
             <table className="table">
                 <thead>
                     <tr>
-                        <td>Person</td>
+                        <td>Name</td>
                         <td>Arrival Time</td>
                         <td>Notes</td>
                     </tr>

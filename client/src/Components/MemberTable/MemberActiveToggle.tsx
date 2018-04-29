@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IMember, Member } from '../Models/Member';
+import { IMember, Member } from 'src/Models/Member';
 
 interface IMemberActiveToggleProps {
     member: IMember;

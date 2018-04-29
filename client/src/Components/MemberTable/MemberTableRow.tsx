@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IMember } from '../Models/Member';
+import { IMember } from 'src/Models/Member';
 import { MemberActiveToggle } from './MemberActiveToggle';
 import { UpDownButtons } from './UpDownButtons';
 import { IMemberTableActions } from './MemberTableActions';
@@ -47,10 +47,7 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
                     {member.rotationOrder}
                 </td>
                 <td>
-                    {member.firstName}
-                </td>
-                <td>
-                    {member.lastName}
+                    {member.firstName} {member.lastName}
                 </td>
                 <td>
                     {member.slackUsername}
