@@ -2,7 +2,7 @@ const db = require("./dbinit").db;
 
 function getAll(req, res, next) {
   let query = "select arr.id, arr.memberid, (mem.firstname || ' ' || mem.lastname) membername, arr.arrivaltime, arr.notes " +
-    "from arrivallog arr left join members mem on arr.memberid = mem.id";
+    "from arrivallog arr left join members mem on arr.memberid = mem.id order by arr.arrivaltime desc";
   db.any(query)
     .then((data) => {
       res.status(200)
