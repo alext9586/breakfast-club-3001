@@ -38,6 +38,9 @@ export class ArrivalTableContainer extends React.Component<{}, IArrivalTableCont
     }
 
     render() {
-        return (<ArrivalTable arrivalLog={this.state.arrivalLog} />);
+        return (
+            <div className="row">
+                <ArrivalTable arrivalLog={this.state.arrivalLog} />
+            </div>);
     }
 }

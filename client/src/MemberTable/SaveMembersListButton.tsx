@@ -11,7 +11,7 @@ export class SaveMembersListButton extends React.Component<ISaveMembersListButto
 
     render() {
         return (
-            <button type="button" onClick={(e) => this.props.saveAction(e)}>
+            <button type="button" className="btn btn-success" onClick={(e) => this.props.saveAction(e)}>
                 Save
             </button>
         );

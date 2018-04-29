@@ -58,36 +58,45 @@ export class AddMemberFormContainer extends React.Component<IAddMemberFormContai
         });
     }
 
-    render() {
+    private renderForm() {
         return (
             <Form>
-            {formApi => (
-                <form onSubmit={(e)=>{ this.formSubmit(e, formApi) }} id={this.state.formId}>
-                    <div>
-                        <label htmlFor="firstName">First Name</label>
-                        <Text field="firstName" id="firstName" />
-                    </div>
-                    
-                    <div>
-                        <label htmlFor="lastName">Last Name</label>
-                        <Text field="lastName" id="lastName" />
-                    </div>
-                    
-                    <div>
-                        <label htmlFor="slackUsername">Slack Username</label>
-                        <Text field="slackUsername" id="slackUsername" />
-                    </div>
+                {formApi => (
+                    <form onSubmit={(e)=>{ this.formSubmit(e, formApi) }} id={this.state.formId}>
+                        <div className="form-row">
+                            <div className="form-group col-md-6">
+                                <label htmlFor="firstName">First Name</label>
+                                <Text field="firstName" id="firstName" className="form-control" />
+                            </div>
+                            <div className="form-group col-md-6">
+                                <label htmlFor="lastName">Last Name</label>
+                                <Text field="lastName" id="lastName" className="form-control" />
+                            </div>
+                        </div>
+                        
+                        <div className="form-group">
+                            <label htmlFor="slackUsername">Slack Username</label>
+                            <Text field="slackUsername" id="slackUsername" className="form-control" />
+                        </div>
 
-                    <div>
-                        <button type="submit" className="btn btn-primary">
-                            Submit
-                        </button>
-                    </div>
+                        <div className="form-group">
+                            <button type="submit" className="btn btn-primary">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                )}
+                </Form>
+        );
+    }
 
-                    <div>{JSON.stringify(formApi.values, null, "\r\n")}</div>
-                </form>
-            )}
-            </Form>
+    render() {
+        return (
+            <div className="row">
+                <div className="col">
+                    {this.renderForm()}
+                </div>
+            </div>
         );
     }
 }

@@ -37,7 +37,7 @@ export class ArrivalTable extends React.Component<IArrivalTableProps, IArrivalTa
         });
 
         return (
-            <table>
+            <table className="table">
                 <thead>
                     <tr>
                         <td>Person</td>

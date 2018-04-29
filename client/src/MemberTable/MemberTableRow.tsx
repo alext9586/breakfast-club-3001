@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { DeleteMemberButton } from './DeleteMemberButton';
 import { IMember } from '../Models/Member';
 import { MemberActiveToggle } from './MemberActiveToggle';
 import { UpDownButtons } from './UpDownButtons';
@@ -15,12 +14,21 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
         super(props);
     }
 
-    private renderAddButton() {
-        const member = this.props.member;
-        const actions = this.props.actions;        
+    private renderRemoveButton(actions: IMemberTableActions, member: IMember) {
+        return (
+            <button type="button"
+                className="btn btn-danger btn-sm"
+                onClick={(e) => actions.deleteMember(e, member.id)}>
+                Remove
+            </button>
+        );
+    }
 
+    private renderAddButton(actions: IMemberTableActions, member: IMember) {
         if(member.rotationOrder === 1) {
-            return (<button type="button" onClick={(e) => actions.addArrivalEntry(e, member.id)}>Add Arrival</button>);
+            return (<button type="button"
+                className="btn btn-primary btn-sm"
+                onClick={(e) => actions.addArrivalEntry(e, member.id)}>Add Arrival</button>);
         } else {
             return null;
         }
@@ -51,8 +59,8 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
                     <MemberActiveToggle member={member} updateAction={actions.updateMember} />
                 </td>
                 <td>
-                    <DeleteMemberButton memberId={member.id} deleteAction={actions.deleteMember} />
-                    { this.renderAddButton() }
+                    { this.renderRemoveButton(actions, member) }
+                    { this.renderAddButton(actions, member) }
                 </td>
             </tr>
         );

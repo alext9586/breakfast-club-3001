@@ -161,7 +161,7 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableState>
             this.addArrivalEntry.bind(this));
 
         return (
-            <div>
+            <div className="row">
                 <SaveMembersListButton saveAction={this.saveAction.bind(this)} />
                 <RotateButton rotateAction={this.rotateAction.bind(this)} />
                 <MemberTable

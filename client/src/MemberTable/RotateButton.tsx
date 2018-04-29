@@ -11,7 +11,7 @@ export class RotateButton extends React.Component<IRotateButtonProps, {}> {
 
     render() {
         return (
-            <button type="button" onClick={(e) => this.props.rotateAction(e)}>
+            <button type="button" className="btn btn-primary" onClick={(e) => this.props.rotateAction(e)}>
                 Rotate
             </button>
         );

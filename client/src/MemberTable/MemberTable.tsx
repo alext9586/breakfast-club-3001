@@ -40,7 +40,7 @@ export class MemberTable extends React.Component<IMemberTableProps, IMemberTable
         });
 
         return (
-            <table>
+            <table className="table">
                 <thead>
                     <tr>
                         <td></td>
@@ -49,6 +49,7 @@ export class MemberTable extends React.Component<IMemberTableProps, IMemberTable
                         <td>Last Name</td>
                         <td>Slack Username</td>
                         <td>Is Active</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
