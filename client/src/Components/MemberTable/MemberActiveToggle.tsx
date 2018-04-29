@@ -3,7 +3,7 @@ import { IMember, Member } from 'src/Models/Member';
 
 interface IMemberActiveToggleProps {
     member: IMember;
-    updateAction: Function;
+    toggleAction: Function;
 }
 
 interface IMemberActiveToggleState {
@@ -32,7 +32,7 @@ export class MemberActiveToggle extends React.Component<IMemberActiveToggleProps
             value
         );
         
-        this.props.updateAction(event, updatedMember);
+        this.props.toggleAction(event, updatedMember);
         this.setState({ isActive: value });
     }
 

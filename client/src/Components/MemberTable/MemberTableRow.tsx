@@ -40,7 +40,9 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
         return (
             <tr>
                 <td>
-                    <UpDownButtons upAction={actions.memberUp} downAction={actions.memberDown} memberId={member.id} />
+                    {member.rotationOrder > 0
+                        ? <UpDownButtons upAction={actions.memberUp} downAction={actions.memberDown} memberId={member.id} />
+                        : null}
                 </td>
                 <td>
                     {member.rotationOrder}
@@ -52,7 +54,7 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
                     {member.slackUsername}
                 </td>
                 <td>
-                    <MemberActiveToggle member={member} updateAction={actions.updateMember} />
+                    <MemberActiveToggle member={member} toggleAction={actions.toggleActive} />
                 </td>
                 <td>
                     { this.renderRemoveButton(actions, member) }

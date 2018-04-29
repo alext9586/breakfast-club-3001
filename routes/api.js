@@ -16,6 +16,8 @@ router.post('/members/rotate', members.rotate);
 
 router.post('/members/saveList', members.saveList);
 
+router.post('/members/changeActive', members.changeActive);
+
 // ----------------------------------------------------------------------------
 
 router.get('/arrivals/all', arrivals.getAll);

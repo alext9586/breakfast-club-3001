@@ -12,15 +12,19 @@ function getAllMembers(req, res, next) {
     });
 }
 
+function insertIntoRotation(t, userId) {
+  let rotationOrderQuery = "select coalesce(max(rotationorder), 0)+1 from memberrotation";
+  return t.none("insert into memberrotation(memberid, rotationorder) values($1, $2)", [userId, 0]).then(q => {
+    return t.none("update memberrotation set rotationorder=(" + rotationOrderQuery + ") where memberid=$1", [userId]);
+  });
+}
+
 function insertMember(req) {
   return db.task("insertMember", t => {
     return t.one("insert into members(firstname, lastname, slackusername, isactive)" +
     "values(${firstName}, ${lastName}, ${slackUsername}, ${isActive}) returning id",
     req.body).then(user => {
-      let rotationOrderQuery = "select coalesce(max(rotationorder), 0)+1 from memberrotation";
-      return t.none("insert into memberrotation(memberid, rotationorder) values($1, $2)", [user.id, 0]).then(q => {
-        return t.none("update memberrotation set rotationorder=(" + rotationOrderQuery + ") where memberid=$1", [user.id]);
-      });
+      return insertIntoRotation(t, user.id);
     });
   });
 }
@@ -147,11 +151,35 @@ function saveList(req, res, next) {
   });
 }
 
+function changeActive(req, res, next) {
+  let memberId = req.body.id;
+  let isActive = req.body.isActive;
+
+  db.task(t => {
+    return t.none("update members set isactive = $1 where id = $2", [isActive, memberId]).then(() => {
+      if(req.body.isActive){
+        return insertIntoRotation(t, memberId);
+      } else {
+        return t.none("DELETE FROM memberrotation WHERE memberid=$1", [memberId]).then(() => {
+          normalizeMemberRotation();
+        });
+      }
+    });
+  }).then(() => {
+    res.status(200)
+      .json({
+        status: 200,
+        message: "Changed member status"
+      });
+  });
+}
+
 module.exports = {
   getAllMembers: getAllMembers,
   addMember: addMember,
   updateMember: updateMember,
   deleteMember: deleteMember,
   rotate: rotate,
-  saveList: saveList
+  saveList: saveList,
+  changeActive: changeActive
 };

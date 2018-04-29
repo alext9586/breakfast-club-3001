@@ -85,6 +85,24 @@ export class HttpService {
         return this.waitForResponse(response);
     }
 
+    public static async changeActive(member: IMember) {
+        var data = {
+            id: member.id,
+            isActive: member.isActive
+        };
+
+        const response = await fetch('/api/members/changeActive', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        return this.waitForResponse(response);
+    }
+
     // ----------------------------------------------------------------------------
 
     public static async getAllArrivals() {

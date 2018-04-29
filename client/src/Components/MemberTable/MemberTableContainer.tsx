@@ -65,7 +65,7 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableContai
     }
 
     private moveMember(memberId: string, reinsert: Function) {
-        let membersList = this.state.membersList.map(i => i);
+        let membersList = this.state.membersList.filter(i => i.isActive);
         membersList.sort(this.sortByRotationOrder);
 
         let foundMember = new Member();
@@ -124,6 +124,13 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableContai
         });
     }
 
+    private toggleActiveAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember) {
+        HttpService.changeActive(member).then(response => {
+            console.log(response);
+            this.refresh();
+        });
+    }
+
     private deleteAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
         HttpService.deleteMember(memberId).then(response => {
             console.log(response);
@@ -148,6 +155,7 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableContai
         const actions = MemberTableActions.create(
             this.memberUpAction.bind(this),
             this.memberDownAction.bind(this),
+            this.toggleActiveAction.bind(this),
             this.updateMemberAction.bind(this),
             this.deleteAction.bind(this),
             this.addArrivalEntry.bind(this));
