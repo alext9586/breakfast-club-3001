@@ -15,9 +15,9 @@ class App extends React.Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <div className="container">
+          <ArrivalTableContainer />
           <MemberTableContainer />
           <AddMemberFormContainer formId="addMemberForm" />
-          <ArrivalTableContainer />
         </div>
       </div>
     );

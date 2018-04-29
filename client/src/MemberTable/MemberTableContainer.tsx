@@ -117,13 +117,6 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableContai
         });
     }
 
-    // private saveAction(e: React.MouseEvent<HTMLButtonElement>) {
-    //     HttpService.saveList(this.state.membersList).then(response => {
-    //         console.log(response);
-    //         this.refresh();
-    //     });
-    // }
-
     private updateMemberAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember) {
         HttpService.updateMember(member).then(response => {
             console.log(response);
