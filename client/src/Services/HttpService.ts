@@ -1,7 +1,8 @@
-import { IMember } from "../Models/Member";
+import { IMemberFormValues, IMember, Member } from "../Models/Member";
 
 export interface IHttpService {
     getAllMembers();
+    addMember(formValues: IMemberFormValues);
     updateMember(member: IMember);
     deleteMember(memberId: string);
     rotate();
@@ -23,6 +24,24 @@ export class HttpService {
     public static async getAllMembers() {
         const response = await fetch('/api/members/all');
         
+        return this.waitForResponse(response);
+    }
+
+    public static async addMember(formValues: IMemberFormValues) {        
+        const response = await fetch('/api/members/add', {
+            body: JSON.stringify(new Member(
+                "",
+                formValues.firstName,
+                formValues.lastName,
+                formValues.slackUsername
+            )),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            method: 'POST'
+        });
+
         return this.waitForResponse(response);
     }
 

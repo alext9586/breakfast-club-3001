@@ -1,10 +1,9 @@
 import * as React from 'react';
 import './App.css';
-import { MemberTableContainer } from './MemberTable/MemberTableContainer';
-import { AddMemberFormContainer } from './AddMemberForm/AddMemberFormContainer';
 import { ArrivalTableContainer } from './ArrivalTable/ArrivalTableContainer';
 
 import logo from './logo.svg';
+import { AdminPageContainer } from './AdminPage/AdminPageContainer';
 
 class App extends React.Component {
   public render() {
@@ -16,8 +15,7 @@ class App extends React.Component {
         </header>
         <div className="container">
           <ArrivalTableContainer />
-          <MemberTableContainer />
-          <AddMemberFormContainer formId="addMemberForm" />
+          <AdminPageContainer />
         </div>
       </div>
     );

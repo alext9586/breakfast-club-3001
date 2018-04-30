@@ -8,51 +8,41 @@ import { IMemberTableActions, MemberTableActions } from './MemberTableActions';
 import { SaveMembersListButton } from './SaveMembersListButton';
 import { ReminderPanelContainer } from '../ReminderPanel/ReminderPanelContainer';
 
-interface IMemberTableContainerState {
-    response: object;
+interface IMemberTableContainerProps {
     membersList: IMember[];
 }
 
-export class MemberTableContainer extends React.Component<{}, IMemberTableContainerState> {
+interface IMemberTableContainerState {
+    membersList: IMember[];
+}
+
+export class MemberTableContainer extends React.Component<IMemberTableContainerProps, IMemberTableContainerState> {
     constructor(props: any){
         super(props);
 
         this.state = {
-            response: [],
-            membersList: []
+            membersList: this.props.membersList
         };
     }
 
-    componentDidMount() {
-        window.addEventListener("refresh", () => this.refresh());
-        this.refresh();
+    static getDerivedStateFromProps(nextProps: IMemberTableContainerProps, prevState: IMemberTableContainerState) {
+        if(nextProps.membersList !== prevState.membersList) {
+            return {
+                membersList: nextProps.membersList
+            }
+        }
+
+        return null;
+    }
+    
+    // Fire a global event notifying refresh of data
+    private publishRefresh(): void {
+        var event = document.createEvent("Event");
+        event.initEvent("refresh", false, true); 
+        window.dispatchEvent(event);
     }
 
-    componentWillUnmount() {
-        window.removeEventListener("refresh", () => this.refresh());
-    }
-
-    private refresh() {
-        HttpService.getAllMembers()
-            .then((res: IRawMember[]) => {
-                var membersList = res.map(member => {
-                    return new Member(
-                        member.id,
-                        member.firstname,
-                        member.lastname,
-                        member.slackusername,
-                        member.rotationorder,
-                        member.isactive);
-                });
-                this.setState({
-                    response: res,
-                    membersList: membersList
-                });
-            })
-            .catch(err => console.log(err));
-    }
-
-    private sortByRotationOrder(a: IMember, b: IMember) {
+    private sortByRotationOrder(a: IMember, b: IMember): number {
         if (a.rotationOrder < b.rotationOrder) {
             return -1;
         }
@@ -64,7 +54,7 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableContai
         return 0;
     }
 
-    private moveMember(memberId: string, reinsert: Function) {
+    private moveMember(memberId: string, reinsert: Function): void {
         let membersList = this.state.membersList.filter(i => i.isActive);
         membersList.sort(this.sortByRotationOrder);
 
@@ -93,11 +83,11 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableContai
 
         HttpService.saveList(membersList).then(response => {
             console.log(response);
-            this.refresh();
+            this.publishRefresh();
         });
     }
 
-    private memberUpAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+    private memberUpAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
         this.moveMember(memberId, (membersList: IMember[], foundMember: IMember, foundIndex) => {
             if(foundIndex === 0) {
                 membersList.push(foundMember);
@@ -107,7 +97,7 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableContai
         });
     }
 
-    private memberDownAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+    private memberDownAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
         this.moveMember(memberId, (membersList: IMember[], foundMember: IMember, foundIndex) => {
             if(foundIndex === membersList.length) {
                 membersList.unshift(foundMember);
@@ -117,41 +107,41 @@ export class MemberTableContainer extends React.Component<{}, IMemberTableContai
         });
     }
 
-    private updateMemberAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember) {
+    private updateMemberAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember): void {
         HttpService.updateMember(member).then(response => {
             console.log(response);
-            this.refresh();
+            this.publishRefresh();
         });
     }
 
-    private toggleActiveAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember) {
+    private toggleActiveAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember): void {
         HttpService.changeActive(member).then(response => {
             console.log(response);
-            this.refresh();
+            this.publishRefresh();
         });
     }
 
-    private deleteAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+    private deleteAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
         HttpService.deleteMember(memberId).then(response => {
             console.log(response);
-            this.refresh();
+            this.publishRefresh();
         });
     }
 
-    private rotateAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+    private rotateAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
         HttpService.rotate().then(response => {
             console.log(response);
-            this.refresh();
+            this.publishRefresh();
         });
     }
 
-    private addArrivalEntry(e: React.MouseEvent<HTMLButtonElement>, memberId: string) {
+    private addArrivalEntry(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
         HttpService.addArrival(memberId).then(response => {
             console.log(response);
         });
     }
 
-    render() {
+    render(): JSX.Element {
         const actions = MemberTableActions.create(
             this.memberUpAction.bind(this),
             this.memberDownAction.bind(this),
