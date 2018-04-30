@@ -8,6 +8,7 @@ import { SaveMembersListButton } from './SaveMembersListButton';
 
 interface IMemberTableContainerProps {
     membersList: IMember[];
+    editMemberAction: Function;
 }
 
 interface IMemberTableContainerState {
@@ -23,7 +24,7 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
         };
     }
 
-    static getDerivedStateFromProps(nextProps: IMemberTableContainerProps, prevState: IMemberTableContainerState) {
+    static getDerivedStateFromProps(nextProps: IMemberTableContainerProps, prevState: IMemberTableContainerState): IMemberTableContainerState | null {
         if(nextProps.membersList !== prevState.membersList) {
             return {
                 membersList: nextProps.membersList
@@ -85,7 +86,7 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
         });
     }
 
-    private memberUpAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
+    private memberUpAction(memberId: string): void {
         this.moveMember(memberId, (membersList: IMember[], foundMember: IMember, foundIndex) => {
             if(foundIndex === 0) {
                 membersList.push(foundMember);
@@ -95,7 +96,7 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
         });
     }
 
-    private memberDownAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
+    private memberDownAction(memberId: string): void {
         this.moveMember(memberId, (membersList: IMember[], foundMember: IMember, foundIndex) => {
             if(foundIndex === membersList.length) {
                 membersList.unshift(foundMember);
@@ -105,28 +106,32 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
         });
     }
 
-    private updateMemberAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember): void {
+    private editMemberAction(member: IMember): void {
+        this.props.editMemberAction(member);
+    }
+
+    private updateMemberAction(member: IMember): void {
         HttpService.updateMember(member).then(response => {
             console.log(response);
             this.publishRefresh();
         });
     }
 
-    private toggleActiveAction(e: React.MouseEvent<HTMLButtonElement>, member: IMember): void {
+    private toggleActiveAction(member: IMember): void {
         HttpService.changeActive(member).then(response => {
             console.log(response);
             this.publishRefresh();
         });
     }
 
-    private deleteAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
+    private deleteAction(memberId: string): void {
         HttpService.deleteMember(memberId).then(response => {
             console.log(response);
             this.publishRefresh();
         });
     }
 
-    private addArrivalEntry(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
+    private addArrivalEntry(memberId: string): void {
         HttpService.addArrival(memberId).then(response => {
             console.log(response);
         });
@@ -137,6 +142,7 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
             this.memberUpAction.bind(this),
             this.memberDownAction.bind(this),
             this.toggleActiveAction.bind(this),
+            this.editMemberAction.bind(this),
             this.updateMemberAction.bind(this),
             this.deleteAction.bind(this),
             this.addArrivalEntry.bind(this));

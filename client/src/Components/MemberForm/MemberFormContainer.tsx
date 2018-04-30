@@ -20,6 +20,16 @@ export class MemberFormContainer extends React.Component<IMemberFormContainerPro
         };
     }
 
+    static getDerivedStateFromProps(nextProps: IMemberFormContainerProps, prevState: IMemberFormContainerState): IMemberFormContainerState | null {
+        if(nextProps.member !== prevState.member) {
+            return {
+                member: nextProps.member
+            }
+        }
+
+        return null;
+    }
+
     // Fire a global event notifying refresh of data
     private publishRefresh(): void {
         var event = document.createEvent("Event");

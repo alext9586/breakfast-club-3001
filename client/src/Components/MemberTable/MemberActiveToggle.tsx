@@ -32,7 +32,7 @@ export class MemberActiveToggle extends React.Component<IMemberActiveToggleProps
             value
         );
         
-        this.props.toggleAction(event, updatedMember);
+        this.props.toggleAction(updatedMember);
         this.setState({ isActive: value });
     }
 

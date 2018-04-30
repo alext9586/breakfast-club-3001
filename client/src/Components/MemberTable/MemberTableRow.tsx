@@ -14,35 +14,36 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
         super(props);
     }
 
-    private renderRemoveButton(actions: IMemberTableActions, member: IMember) {
+    private renderEditButton(actions: IMemberTableActions, member: IMember): JSX.Element {
         return (
-            <button type="button"
-                className="btn btn-danger btn-sm"
-                onClick={(e) => actions.deleteMember(e, member.id)}>
-                Remove
-            </button>
-        );
-    }
-
-    private renderEditButton(): JSX.Element {
-        return (
-            <button type="button" className="btn btn-warning btn-sm">
+            <button type="button" className="btn btn-warning btn-sm" onClick={e => actions.editMember(member)}>
                 <i className="fas fa-pencil-alt"></i>
             </button>
         );
     }
 
-    private renderAddButton(actions: IMemberTableActions, member: IMember) {
+    private renderRemoveButton(actions: IMemberTableActions, member: IMember): JSX.Element {
+        return (
+            <button type="button"
+                className="btn btn-danger btn-sm"
+                onClick={(e) => actions.deleteMember(member.id)}>
+                Remove
+            </button>
+        );
+    }
+
+    private renderAddButton(actions: IMemberTableActions, member: IMember): JSX.Element | null {
         if(member.rotationOrder === 1) {
-            return (<button type="button"
-                className="btn btn-primary btn-sm"
-                onClick={(e) => actions.addArrivalEntry(e, member.id)}>Mark as Arrived</button>);
+            return (
+                <button type="button"
+                    className="btn btn-primary btn-sm"
+                    onClick={e => actions.addArrivalEntry(member.id)}>Mark as Arrived</button>);
         } else {
             return null;
         }
     }
 
-    render() {
+    render(): JSX.Element {
         const {member, actions} = this.props;
 
         return (
@@ -65,7 +66,7 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
                     <MemberActiveToggle member={member} toggleAction={actions.toggleActive} />
                 </td>
                 <td>
-                    { this.renderEditButton() }
+                    { this.renderEditButton(actions, member) }
                     { this.renderRemoveButton(actions, member) }
                     { this.renderAddButton(actions, member) }
                 </td>

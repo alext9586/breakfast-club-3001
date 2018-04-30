@@ -50,7 +50,19 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
             .catch(err => console.log(err));
     }
 
-    private rotateAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
+    private editMemberAction(member: IMember): void {
+        const newState = {
+            activeMember: member,
+            membersList: this.state.membersList
+        };
+
+        this.setState(newState);
+
+        console.log("member:", member);
+        console.log(JSON.stringify(this.state.activeMember, null, "  "));
+    }
+
+    private rotateAction(): void {
         HttpService.rotate().then(response => {
             console.log(response);
             this.refresh();
@@ -59,19 +71,22 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
 
     render(): JSX.Element {
         const {activeMember, membersList} = this.state;
+        const rotateAction = this.rotateAction.bind(this);
+        const editMemberAction = this.editMemberAction.bind(this);
 
         return (
             <div>
                 <div className="row">
                     <div className="col-md-2">
-                        <RotateButton rotateAction={this.rotateAction.bind(this)} />
+                        <RotateButton rotateAction={rotateAction} />
                     </div>
                     <div className="col-md-10">
                         <ReminderPanelContainer membersList={membersList} />
                     </div>
                 </div>
                 <MemberTableContainer
-                        membersList={membersList} />
+                        membersList={membersList}
+                        editMemberAction={editMemberAction} />
                 <MemberFormContainer
                     formId="addMemberForm"
                     member={activeMember} />

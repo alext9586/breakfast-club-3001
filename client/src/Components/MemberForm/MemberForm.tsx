@@ -21,6 +21,16 @@ export class MemberForm extends React.Component<IMemberFormProps, IMemberFormSta
         }        
     }
 
+    static getDerivedStateFromProps(nextProps: IMemberFormProps, prevState: IMemberFormState): IMemberFormState | null {
+        if(nextProps.member !== prevState.member) {
+            return {
+                member: nextProps.member
+            }
+        }
+
+        return null;
+    }
+
     private formSubmit(e: React.FormEvent<HTMLFormElement>, formApi: FormFunctionProps): void {
         formApi.submitForm(e);
         this.props.submitAction(formApi.values);
@@ -33,26 +43,37 @@ export class MemberForm extends React.Component<IMemberFormProps, IMemberFormSta
     }
 
     render(): JSX.Element {
-        const {formId, member} = this.props;
+        const {formId} = this.props;
+        const {member} = this.state;
+
+        const defaultValues = {
+            firstName: member.firstName,
+            lastName: member.lastName,
+            slackUsername: member.slackUsername
+        };
+
+        console.log(defaultValues);
 
         return (
-            <Form>
+            <Form defaultValues={defaultValues}>
                 {formApi => (
-                    <form onSubmit={(e)=>{ this.formSubmit(e, formApi) }} id={formId}>
+                    <form 
+                        id={formId}
+                        onSubmit={(e)=>{ this.formSubmit(e, formApi) }}>
                         <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label htmlFor="firstName">First Name</label>
-                                <Text field="firstName" id="firstName" className="form-control" value={member.firstName} />
+                                <Text field="firstName" id="firstName" className="form-control" />
                             </div>
                             <div className="form-group col-md-6">
                                 <label htmlFor="lastName">Last Name</label>
-                                <Text field="lastName" id="lastName" className="form-control" value={member.lastName} />
+                                <Text field="lastName" id="lastName" className="form-control" />
                             </div>
                         </div>
                         
                         <div className="form-group">
                             <label htmlFor="slackUsername">Slack Username</label>
-                            <Text field="slackUsername" id="slackUsername" className="form-control" value={member.slackUsername} />
+                            <Text field="slackUsername" id="slackUsername" className="form-control" />
                         </div>
 
                         <div className="form-group text-right">
