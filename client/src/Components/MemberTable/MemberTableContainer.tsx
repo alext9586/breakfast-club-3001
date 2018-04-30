@@ -3,10 +3,8 @@ import { MemberTable } from './MemberTable';
 import { IMember, Member } from 'src/Models/Member';
 import { IRawMember } from 'src/Models/RawViewModels';
 import { HttpService } from 'src/Services/HttpService';
-import { RotateButton } from './RotateButton';
 import { IMemberTableActions, MemberTableActions } from './MemberTableActions';
 import { SaveMembersListButton } from './SaveMembersListButton';
-import { ReminderPanelContainer } from '../ReminderPanel/ReminderPanelContainer';
 
 interface IMemberTableContainerProps {
     membersList: IMember[];
@@ -128,13 +126,6 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
         });
     }
 
-    private rotateAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
-        HttpService.rotate().then(response => {
-            console.log(response);
-            this.publishRefresh();
-        });
-    }
-
     private addArrivalEntry(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
         HttpService.addArrival(memberId).then(response => {
             console.log(response);
@@ -151,20 +142,8 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
             this.addArrivalEntry.bind(this));
 
         return (
-            <div>
-                <div className="row">
-                    <div className="col-md-2">
-                        <RotateButton rotateAction={this.rotateAction.bind(this)} />
-                    </div>
-                    <div className="col-md-10">
-                        <ReminderPanelContainer membersList={this.state.membersList} />
-                    </div>
-                </div>
-                <div className="row">
-                    <MemberTable
+            <MemberTable
                         membersList={this.state.membersList}
-                        actions={actions} />
-                </div>
-            </div>);
+                        actions={actions} />);
     }
 }

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { RotateButton } from './RotateButton';
+import { ReminderPanelContainer } from '../ReminderPanel/ReminderPanelContainer';
 import { MemberTableContainer } from 'src/Components/MemberTable/MemberTableContainer';
 import { MemberFormContainer } from 'src/Components/MemberForm/MemberFormContainer';
 import { Member, IMember } from 'src/Models/Member';
@@ -48,13 +50,28 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
             .catch(err => console.log(err));
     }
 
+    private rotateAction(e: React.MouseEvent<HTMLButtonElement>, memberId: string): void {
+        HttpService.rotate().then(response => {
+            console.log(response);
+            this.refresh();
+        });
+    }
+
     render(): JSX.Element {
         const {activeMember, membersList} = this.state;
 
         return (
             <div>
+                <div className="row">
+                    <div className="col-md-2">
+                        <RotateButton rotateAction={this.rotateAction.bind(this)} />
+                    </div>
+                    <div className="col-md-10">
+                        <ReminderPanelContainer membersList={membersList} />
+                    </div>
+                </div>
                 <MemberTableContainer
-                    membersList={membersList} />
+                        membersList={membersList} />
                 <MemberFormContainer
                     formId="addMemberForm"
                     member={activeMember} />

@@ -24,6 +24,14 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
         );
     }
 
+    private renderEditButton(): JSX.Element {
+        return (
+            <button type="button" className="btn btn-warning btn-sm">
+                <i className="fas fa-pencil-alt"></i>
+            </button>
+        );
+    }
+
     private renderAddButton(actions: IMemberTableActions, member: IMember) {
         if(member.rotationOrder === 1) {
             return (<button type="button"
@@ -57,6 +65,7 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
                     <MemberActiveToggle member={member} toggleAction={actions.toggleActive} />
                 </td>
                 <td>
+                    { this.renderEditButton() }
                     { this.renderRemoveButton(actions, member) }
                     { this.renderAddButton(actions, member) }
                 </td>
