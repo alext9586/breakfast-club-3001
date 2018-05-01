@@ -146,6 +146,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
 
         return (
             <div>
+                <h1>Admin Page</h1>
                 {hasMembers
                     ? <ReminderPanelContainer membersList={membersList} />
                     : null
