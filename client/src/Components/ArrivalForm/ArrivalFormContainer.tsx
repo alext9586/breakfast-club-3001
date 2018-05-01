@@ -1,4 +1,5 @@
 import * as React from 'react';
+import DateTimePicker from 'react-datetime-picker';
 import { IMember } from 'src/Models/Member';
 
 interface IArrivalFormContainerProps {
@@ -12,6 +13,10 @@ interface IArrivalFormContainerStates {
 }
 
 export class ArrivalFormContainer extends React.Component<IArrivalFormContainerProps, IArrivalFormContainerStates> {
+    private formStyle = {
+        height: "500px"
+    };
+
     constructor(props: IArrivalFormContainerProps) {
         super(props);
 
@@ -19,6 +24,13 @@ export class ArrivalFormContainer extends React.Component<IArrivalFormContainerP
             arrivalTime: new Date(),
             notes: ""
         }
+    }
+
+    private handleTimeChange(date: Date): void {
+        this.setState({
+            arrivalTime: date,
+            notes: this.state.notes
+        });
     }
 
     private handleNotesChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -30,24 +42,28 @@ export class ArrivalFormContainer extends React.Component<IArrivalFormContainerP
 
     render(): JSX.Element {
         const fullname = `${this.props.member.firstName} ${this.props.member.lastName}`;
+        const handleTimeChange = this.handleTimeChange.bind(this);
         const handleNotesChange = this.handleNotesChange.bind(this);
 
         return (
-            <form>
+            <form style={this.formStyle}>
                 <h1>{fullname}</h1>
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <h2>Reserved</h2>
+                <div className="form-group">
+                    <label>Arrival Time</label>
+                    <div>
+                        <DateTimePicker
+                            onChange={handleTimeChange}
+                            value={this.state.arrivalTime} />
                     </div>
-                    <div className="form-group col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="arrivalNotes">Notes</label>
-                            <input type="text"
-                                className="form-control"
-                                name="arrivalNotes"
-                                value={this.state.notes}
-                                onChange={handleNotesChange} />
-                        </div>
+                </div>
+                <div className="form-group">
+                    <div className="form-group">
+                        <label htmlFor="arrivalNotes">Notes</label>
+                        <input type="text"
+                            className="form-control"
+                            name="arrivalNotes"
+                            value={this.state.notes}
+                            onChange={handleNotesChange} />
                     </div>
                 </div>
                 <div className="form-group text-right">
