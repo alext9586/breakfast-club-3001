@@ -2,7 +2,7 @@ import { IMemberFormValues, IMember, Member } from "../Models/Member";
 
 export interface IHttpService {
     getAllMembers();
-    addMember(formValues: IMemberFormValues);
+    addMember(member: IMember);
     updateMember(member: IMember);
     deleteMember(memberId: string);
     rotate();
@@ -27,14 +27,9 @@ export class HttpService {
         return this.waitForResponse(response);
     }
 
-    public static async addMember(formValues: IMemberFormValues) {        
+    public static async addMember(member: IMember) {        
         const response = await fetch('/api/members/add', {
-            body: JSON.stringify(new Member(
-                "",
-                formValues.firstName,
-                formValues.lastName,
-                formValues.slackUsername
-            )),
+            body: JSON.stringify(member),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',

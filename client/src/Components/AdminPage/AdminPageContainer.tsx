@@ -1,16 +1,22 @@
 import * as React from 'react';
-import { RotateButton } from './RotateButton';
 import { ReminderPanelContainer } from '../ReminderPanel/ReminderPanelContainer';
 import { MemberTableContainer } from 'src/Components/MemberTable/MemberTableContainer';
 import { MemberFormContainer } from 'src/Components/MemberForm/MemberFormContainer';
 import { Member, IMember, IMemberFormValues } from 'src/Models/Member';
 import { HttpService } from 'src/Services/HttpService';
 import { IRawMember } from 'src/Models/RawViewModels';
+import { AdminMenuBar } from './AdminMenuBar';
 
 interface IAdminPageContainerState {
     activeMember: IMember;
-    addMember: boolean;
+    displayState: State;
     membersList: IMember[];
+}
+
+enum State {
+    DisplayMembers,
+    AddMember,
+    EditMember
 }
 
 export class AdminPageContainer extends React.Component<{}, IAdminPageContainerState> {
@@ -18,7 +24,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
         super(props);        
         this.state = {
             activeMember: new Member(),
-            addMember: false,
+            displayState: State.DisplayMembers,
             membersList: []
         };
     }
@@ -46,44 +52,45 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                 });
                 this.setState({
                     activeMember: new Member(),
-                    addMember: false,
+                    displayState: State.DisplayMembers,
                     membersList: membersList
                 });
             })
             .catch(err => console.log(err));
     }
 
-    private addMemberAction(): void {
+    private showAddMemberFormAction(): void {
         this.setState({
             activeMember: new Member(),
-            addMember: true,
+            displayState: State.AddMember,
             membersList: this.state.membersList
         });
     }
 
-    private closeAddMemberAction(): void {
+    private showEditMemberFormAction(member: IMember): void {
         this.setState({
-            activeMember: new Member(),
-            addMember: false,
-            membersList: this.state.membersList
-        });
-    }
-
-    private editMemberAction(member: IMember): void {
-        const newState = {
             activeMember: member,
-            addMember: true,
+            displayState: State.EditMember,
             membersList: this.state.membersList
-        };
-
-        this.setState(newState);
-
-        console.log("member:", member);
-        console.log(JSON.stringify(this.state.activeMember, null, "  "));
+        });
     }
 
-    private addMemberSubmitAction(value: IMemberFormValues): void {
-        HttpService.addMember(value).then(() => {
+    private closeMemberFormAction(): void {
+        this.setState({
+            activeMember: new Member(),
+            displayState: State.DisplayMembers,
+            membersList: this.state.membersList
+        });
+    }
+
+    private addMemberSubmitAction(member: IMember): void {
+        HttpService.addMember(member).then(() => {
+            this.refresh();
+        });
+    }
+
+    private editMemberSubmitAction(member: IMember): void {
+        HttpService.updateMember(member).then(() => {
             this.refresh();
         });
     }
@@ -96,36 +103,33 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
     }
 
     render(): JSX.Element {
-        const {activeMember, addMember, membersList} = this.state;
+        const {activeMember, displayState, membersList} = this.state;
         const rotateAction = this.rotateAction.bind(this);
-        const addMemberAction = this.addMemberAction.bind(this);
-        const editMemberAction = this.editMemberAction.bind(this);
-        const addMemberSubmitAction = this.addMemberSubmitAction.bind(this);
-        const closeAddMemberAction = this.closeAddMemberAction.bind(this);
+        
+        const showAddMemberFormAction = this.showAddMemberFormAction.bind(this);
+        const showEditMemberFormAction = this.showEditMemberFormAction.bind(this);
+        const closeMemberFormAction = this.closeMemberFormAction.bind(this);
+        
+        const showMemberForm = (displayState === State.AddMember || displayState === State.EditMember);
+        const memberFormSubmitAction = displayState === State.AddMember
+            ? this.addMemberSubmitAction.bind(this)
+            : this.editMemberSubmitAction.bind(this);
 
         return (
             <div>
-                <div className="row">
-                    <div className="col-md-2">
-                        <RotateButton rotateAction={rotateAction} />
-                        <button type="button" className="btn btn-primary" onClick={addMemberAction}>
-                            Add Member
-                        </button>
-                    </div>
-                    <div className="col-md-10">
-                        <ReminderPanelContainer membersList={membersList} />
-                    </div>
-                </div>
-                <MemberTableContainer
-                        membersList={membersList}
-                        editMemberAction={editMemberAction} />
-                {addMember
+                <ReminderPanelContainer membersList={membersList} />
+                <AdminMenuBar rotateAction={rotateAction}
+                    addMemberAction={showAddMemberFormAction} />                
+                {showMemberForm
                     ? <MemberFormContainer
-                        formId="addMemberForm"
+                        formId="showMemberFormForm"
                         member={activeMember}
-                        submitAction={addMemberSubmitAction}
-                        cancelAction={closeAddMemberAction} />
-                    : null}
+                        submitAction={memberFormSubmitAction}
+                        cancelAction={closeMemberFormAction} />
+                    : <MemberTableContainer
+                        membersList={membersList}
+                        editMemberAction={showEditMemberFormAction} />
+                }
                 
             </div>
         );

@@ -30,10 +30,16 @@ export class MemberForm extends React.Component<IMemberFormProps, IMemberFormSta
 
         return null;
     }
-    
+
     private formSubmit(e: React.FormEvent<HTMLFormElement>, formApi: FormFunctionProps): void {
         formApi.submitForm(e);
-        this.props.submitAction(formApi.values);
+        const formValues = formApi.values;        
+        const newMember = this.props.member;
+        newMember.firstName = formValues.firstName;
+        newMember.lastName = formValues.lastName;
+        newMember.slackUsername = formValues.slackUsername;
+
+        this.props.submitAction(newMember);
         formApi.resetAll();
     }
 
