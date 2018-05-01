@@ -47,6 +47,7 @@ export class MemberTable extends React.Component<IMemberTableProps, IMemberTable
                         <td>Order</td>
                         <td>Name</td>
                         <td>Slack Username</td>
+                        <td>Edit</td>
                         <td>Active</td>
                         <td></td>
                     </tr>

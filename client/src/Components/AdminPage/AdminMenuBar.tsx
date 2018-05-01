@@ -13,9 +13,9 @@ export class AdminMenuBar extends React.Component<IAdminMenuBarProps, {}> {
 
     private renderRotateButton(): JSX.Element | null {
         return (this.props.canRotate
-            ? (<button type="button" className="btn btn-primary" onClick={e => this.props.rotateAction()}>
+            ? <button type="button" className="btn btn-primary" onClick={e => this.props.rotateAction()}>
                     Rotate
-                </button>)
+                </button>
             : null
         );
     }

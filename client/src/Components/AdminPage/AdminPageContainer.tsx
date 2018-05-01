@@ -169,9 +169,9 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                                 membersList={membersList}
                                 arrivalAction={showMemberArrivalFormAction}
                                 editMemberAction={showEditMemberFormAction} />
-                            : <div>
-                                <h2>There are no members.</h2>
-                                <p>Please add members</p>
+                            :   <div>
+                                    <h2>There are no members.</h2>
+                                    <p>Please add members</p>
                                 </div>
                         }
                         </div>
@@ -184,8 +184,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                         cancelAction={closeFormAction}
                         saveAction={addArrivalAction} />
                     : null
-                }
-                
+                }                
             </div>
         );
     }

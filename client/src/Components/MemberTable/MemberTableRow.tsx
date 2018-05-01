@@ -33,14 +33,12 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
     }
 
     private renderAddButton(actions: IMemberTableActions, member: IMember): JSX.Element | null {
-        if(member.rotationOrder === 1) {
-            return (
-                <button type="button"
-                    className="btn btn-primary btn-sm"
-                    onClick={e => actions.addArrivalEntry(member.id)}>Mark as Arrived</button>);
-        } else {
-            return null;
-        }
+        return (member.rotationOrder === 1
+            ? <button type="button"
+                className="btn btn-primary btn-sm"
+                onClick={e => actions.addArrivalEntry(member.id)}>Mark as Arrived</button>
+            : null
+        );
     }
 
     render(): JSX.Element {
@@ -63,11 +61,16 @@ export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
                     {member.slackUsername}
                 </td>
                 <td>
+                    { this.renderEditButton(actions, member) }
+                </td>
+                <td>
                     <MemberActiveToggle member={member} toggleAction={actions.toggleActive} />
                 </td>
                 <td>
-                    { this.renderEditButton(actions, member) }
-                    { this.renderRemoveButton(actions, member) }
+                    {/*
+                        // For dev to test. Don't use for prod.
+                        { this.renderRemoveButton(actions, member) }
+                    */}
                     { this.renderAddButton(actions, member) }
                 </td>
             </tr>
