@@ -30,7 +30,7 @@ export class MemberForm extends React.Component<IMemberFormProps, IMemberFormSta
 
         return null;
     }
-
+    
     private formSubmit(e: React.FormEvent<HTMLFormElement>, formApi: FormFunctionProps): void {
         formApi.submitForm(e);
         this.props.submitAction(formApi.values);

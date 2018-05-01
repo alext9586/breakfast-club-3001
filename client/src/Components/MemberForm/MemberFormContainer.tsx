@@ -6,6 +6,8 @@ import { HttpService } from 'src/Services/HttpService';
 interface IMemberFormContainerProps {
     formId: string;
     member: IMember;
+    submitAction: Function;
+    cancelAction: Function;
 }
 
 interface IMemberFormContainerState {
@@ -30,25 +32,8 @@ export class MemberFormContainer extends React.Component<IMemberFormContainerPro
         return null;
     }
 
-    // Fire a global event notifying refresh of data
-    private publishRefresh(): void {
-        var event = document.createEvent("Event");
-        event.initEvent("refresh", false, true); 
-        window.dispatchEvent(event);
-    }
-
-    private addMember(value: IMemberFormValues): void {
-        HttpService.addMember(value).then(() => {
-            this.publishRefresh();
-        });
-    }
-
-    private cancelAction(): void {
-        // do nothing
-    }
-
     render(): JSX.Element {
-        const {formId, member} = this.props;
+        const {formId, member, submitAction, cancelAction} = this.props;
 
         return (
             <div className="row">
@@ -56,8 +41,8 @@ export class MemberFormContainer extends React.Component<IMemberFormContainerPro
                     <MemberForm
                         formId={formId}
                         member={member}
-                        submitAction={this.addMember.bind(this)}
-                        cancelAction={this.cancelAction.bind(this)} />
+                        submitAction={submitAction}
+                        cancelAction={cancelAction} />
                 </div>
             </div>
         );
