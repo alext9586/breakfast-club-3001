@@ -9,6 +9,7 @@ import { SaveMembersListButton } from './SaveMembersListButton';
 interface IMemberTableContainerProps {
     membersList: IMember[];
     editMemberAction: Function;
+    arrivalAction: Function;
 }
 
 interface IMemberTableContainerState {
@@ -131,10 +132,8 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
         });
     }
 
-    private addArrivalEntry(memberId: string): void {
-        HttpService.addArrival(memberId).then(response => {
-            console.log(response);
-        });
+    private addArrivalEntry(): void {
+        this.props.arrivalAction();
     }
 
     render(): JSX.Element {

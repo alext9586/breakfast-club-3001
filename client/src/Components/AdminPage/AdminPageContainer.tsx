@@ -4,9 +4,10 @@ import { MemberTableContainer } from 'src/Components/MemberTable/MemberTableCont
 import { MemberFormContainer } from 'src/Components/MemberForm/MemberFormContainer';
 import { Member, IMember } from 'src/Models/Member';
 import { HttpService } from 'src/Services/HttpService';
-import { IRawMember } from 'src/Models/RawViewModels';
+import { IRawMember, IArrivalSend } from 'src/Models/RawViewModels';
 import { AdminMenuBar } from './AdminMenuBar';
 import { ArrivalFormContainer } from '../ArrivalForm/ArrivalFormContainer';
+import { IArrival } from '../../Models/Arrival';
 
 interface IAdminPageContainerState {
     activeMember: IMember;
@@ -77,7 +78,15 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
         });
     }
 
-    private closeMemberFormAction(): void {
+    private showMemberArrivalFormAction(): void {
+        this.setState({
+            activeMember: this.state.activeMember,
+            displayState: State.MemberArrival,
+            membersList: this.state.membersList
+        });
+    }
+
+    private closeFormAction(): void {
         this.setState({
             activeMember: new Member(),
             displayState: State.DisplayMembers,
@@ -97,6 +106,13 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
         });
     }
 
+    private addArrivalAction(arrival: IArrivalSend): void {        
+        HttpService.addArrival(arrival).then(response => {
+            console.log(response);
+            this.refresh();
+        });
+    }
+
     private rotateAction(): void {
         HttpService.rotate().then(response => {
             console.log(response);
@@ -110,33 +126,64 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
         
         const showAddMemberFormAction = this.showAddMemberFormAction.bind(this);
         const showEditMemberFormAction = this.showEditMemberFormAction.bind(this);
-        const closeMemberFormAction = this.closeMemberFormAction.bind(this);
+        const showMemberArrivalFormAction = this.showMemberArrivalFormAction.bind(this);
+
+        const addArrivalAction = this.addArrivalAction.bind(this);
+        const closeFormAction = this.closeFormAction.bind(this);
         
+        const hasMembers = membersList.length > 0;
+        const canRotate = membersList.length > 1;
+
+        const showMemberTable = displayState === State.DisplayMembers;
+        const showArrivalForm = displayState === State.MemberArrival;
         const showMemberForm = (displayState === State.AddMember || displayState === State.EditMember);
+        
         const memberFormSubmitAction = displayState === State.AddMember
             ? this.addMemberSubmitAction.bind(this)
             : this.editMemberSubmitAction.bind(this);
 
-        const currentMember = membersList.length > 0 ? membersList[0] : new Member();
+        const currentMember = hasMembers ? membersList[0] : new Member();
 
         return (
             <div>
-                <ArrivalFormContainer formId="arrivalForm" member={currentMember} />
-                <ReminderPanelContainer membersList={membersList} />
-                {showMemberForm
-                    ? null
-                    : <AdminMenuBar rotateAction={rotateAction}
-                        addMemberAction={showAddMemberFormAction} />
+                {hasMembers
+                    ? <ReminderPanelContainer membersList={membersList} />
+                    : null
                 }
                 {showMemberForm
                     ? <MemberFormContainer
                         formId="showMemberFormForm"
                         member={activeMember}
                         submitAction={memberFormSubmitAction}
-                        cancelAction={closeMemberFormAction} />
-                    : <MemberTableContainer
-                        membersList={membersList}
-                        editMemberAction={showEditMemberFormAction} />
+                        cancelAction={closeFormAction} />
+                    : null
+                }
+                {showMemberTable
+                    ? <div>
+                        <AdminMenuBar
+                            canRotate={canRotate}
+                            rotateAction={rotateAction}
+                            addMemberAction={showAddMemberFormAction} />
+                        {hasMembers
+                            ? <MemberTableContainer
+                                membersList={membersList}
+                                arrivalAction={showMemberArrivalFormAction}
+                                editMemberAction={showEditMemberFormAction} />
+                            : <div>
+                                <h2>There are no members.</h2>
+                                <p>Please add members</p>
+                                </div>
+                        }
+                        </div>
+                    : null
+                }
+                {showArrivalForm
+                    ? <ArrivalFormContainer
+                        formId="arrivalForm"
+                        member={currentMember}
+                        cancelAction={closeFormAction}
+                        saveAction={addArrivalAction} />
+                    : null
                 }
                 
             </div>

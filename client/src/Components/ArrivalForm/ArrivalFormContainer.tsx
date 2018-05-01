@@ -1,10 +1,14 @@
 import * as React from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import { IMember } from 'src/Models/Member';
+import { Arrival } from 'src/Models/Arrival';
+import { IArrivalSend } from 'src/Models/RawViewModels';
 
 interface IArrivalFormContainerProps {
     member: IMember;
     formId: string;
+    saveAction: Function;
+    cancelAction: Function;
 }
 
 interface IArrivalFormContainerStates {
@@ -40,10 +44,22 @@ export class ArrivalFormContainer extends React.Component<IArrivalFormContainerP
         });
     }
 
+    private saveAction(): void {
+        const data: IArrivalSend = {
+            memberId: this.props.member.id,
+            arrivalTime: this.state.arrivalTime,
+            notes: this.state.notes
+        };
+
+        this.props.saveAction(data);
+    }
+
     render(): JSX.Element {
+        const {cancelAction} = this.props;
         const fullname = `${this.props.member.firstName} ${this.props.member.lastName}`;
         const handleTimeChange = this.handleTimeChange.bind(this);
         const handleNotesChange = this.handleNotesChange.bind(this);
+        const saveAction = this.saveAction.bind(this);
 
         return (
             <form style={this.formStyle}>
@@ -67,10 +83,10 @@ export class ArrivalFormContainer extends React.Component<IArrivalFormContainerP
                     </div>
                 </div>
                 <div className="form-group text-right">
-                    <button type="button" className="btn btn-outline-secondary">
+                    <button type="button" className="btn btn-outline-secondary" onClick={e => cancelAction()}>
                         Cancel
                     </button>
-                    <button type="button" className="btn btn-primary">
+                    <button type="button" className="btn btn-primary" onClick={saveAction}>
                         Save
                     </button>
                 </div>

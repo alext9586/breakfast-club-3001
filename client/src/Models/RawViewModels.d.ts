@@ -14,3 +14,9 @@ export interface IRawArrival {
     arrivaltime: string;
     notes: string;
 }
+
+export interface IArrivalSend {
+    memberId: string;
+    arrivalTime: Date;
+    notes: string;
+}

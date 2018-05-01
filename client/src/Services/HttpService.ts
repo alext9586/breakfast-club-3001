@@ -1,4 +1,6 @@
 import { IMember, Member } from "../Models/Member";
+import { IArrival } from "../Models/Arrival";
+import { IArrivalSend } from "../Models/RawViewModels";
 
 export interface IHttpService {
     getAllMembers();
@@ -125,20 +127,14 @@ export class HttpService {
         return this.waitForResponse(response);
     }
 
-    public static async addArrival(memberId: string) {
-        var data = {
-            memberId: memberId,
-            arrivalTime: new Date(),
-            notes: "tacos"
-        };
-
+    public static async addArrival(arrival: IArrivalSend) {
         const response = await fetch('/api/arrivals/add', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(arrival)
         });
 
         return this.waitForResponse(response);
