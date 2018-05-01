@@ -118,8 +118,11 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
         return (
             <div>
                 <ReminderPanelContainer membersList={membersList} />
-                <AdminMenuBar rotateAction={rotateAction}
-                    addMemberAction={showAddMemberFormAction} />                
+                {showMemberForm
+                    ? null
+                    : <AdminMenuBar rotateAction={rotateAction}
+                        addMemberAction={showAddMemberFormAction} />
+                }
                 {showMemberForm
                     ? <MemberFormContainer
                         formId="showMemberFormForm"
