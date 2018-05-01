@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './App.css';
 import { ArrivalTableContainer } from './ArrivalTable/ArrivalTableContainer';
 
@@ -14,8 +15,12 @@ class App extends React.Component {
           <h1 className="App-title">Breakfast Club</h1>
         </header>
         <div className="container">
-          <ArrivalTableContainer />
-          <AdminPageContainer />
+          <Router>
+            <div>
+              <Route exact path="/" component={ArrivalTableContainer} />
+              <Route path="/admin" component={AdminPageContainer} />
+            </div>
+          </Router>
         </div>
       </div>
     );
