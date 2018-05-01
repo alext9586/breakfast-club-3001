@@ -9,12 +9,6 @@ export interface IMember {
     isActive: boolean;
 }
 
-export interface IMemberFormValues {
-    firstName: string;
-    lastName: string;
-    slackUsername: string;
-}
-
 export class Member implements IMember {
     constructor(
         public id: string = "",

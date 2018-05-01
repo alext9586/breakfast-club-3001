@@ -58,8 +58,6 @@ export class MemberForm extends React.Component<IMemberFormProps, IMemberFormSta
             slackUsername: member.slackUsername
         };
 
-        console.log(defaultValues);
-
         return (
             <Form defaultValues={defaultValues}>
                 {formApi => (

@@ -1,4 +1,4 @@
-import { IMemberFormValues, IMember, Member } from "../Models/Member";
+import { IMember, Member } from "../Models/Member";
 
 export interface IHttpService {
     getAllMembers();

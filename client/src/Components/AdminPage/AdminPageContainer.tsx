@@ -2,10 +2,11 @@ import * as React from 'react';
 import { ReminderPanelContainer } from '../ReminderPanel/ReminderPanelContainer';
 import { MemberTableContainer } from 'src/Components/MemberTable/MemberTableContainer';
 import { MemberFormContainer } from 'src/Components/MemberForm/MemberFormContainer';
-import { Member, IMember, IMemberFormValues } from 'src/Models/Member';
+import { Member, IMember } from 'src/Models/Member';
 import { HttpService } from 'src/Services/HttpService';
 import { IRawMember } from 'src/Models/RawViewModels';
 import { AdminMenuBar } from './AdminMenuBar';
+import { ArrivalFormContainer } from '../ArrivalForm/ArrivalFormContainer';
 
 interface IAdminPageContainerState {
     activeMember: IMember;
@@ -16,7 +17,8 @@ interface IAdminPageContainerState {
 enum State {
     DisplayMembers,
     AddMember,
-    EditMember
+    EditMember,
+    MemberArrival
 }
 
 export class AdminPageContainer extends React.Component<{}, IAdminPageContainerState> {
@@ -115,8 +117,11 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
             ? this.addMemberSubmitAction.bind(this)
             : this.editMemberSubmitAction.bind(this);
 
+        const currentMember = membersList.length > 0 ? membersList[0] : new Member();
+
         return (
             <div>
+                <ArrivalFormContainer formId="arrivalForm" member={currentMember} />
                 <ReminderPanelContainer membersList={membersList} />
                 {showMemberForm
                     ? null
