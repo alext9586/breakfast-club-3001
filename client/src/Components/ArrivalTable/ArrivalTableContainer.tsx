@@ -26,7 +26,7 @@ export class ArrivalTableContainer extends React.Component<{}, IArrivalTableCont
         // window.removeEventListener("refresh", () => this.refresh());
     }
 
-    private refresh() {
+    private refresh(): void {
         HttpService.getAllArrivals()
             .then((res: IRawArrival[]) => {
                 let arrivalLog = res.map(arrival => ArrivalConverter.fromRawArrival(arrival));
@@ -37,10 +37,17 @@ export class ArrivalTableContainer extends React.Component<{}, IArrivalTableCont
             .catch(err => console.log(err));
     }
 
-    render() {
+    render(): JSX.Element {
+        const hasRecords = this.state.arrivalLog.length > 0;
+
         return (
-            <div className="row">
-                <ArrivalTable arrivalLog={this.state.arrivalLog} />
+            <div>
+                {hasRecords
+                    ? <ArrivalTable arrivalLog={this.state.arrivalLog} />
+                    :   <div>
+                            <h2>There are no arrivals.</h2>
+                        </div>
+                }
             </div>);
     }
 }

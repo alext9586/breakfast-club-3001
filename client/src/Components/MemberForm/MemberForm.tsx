@@ -31,7 +31,7 @@ export class MemberForm extends React.Component<IMemberFormProps, IMemberFormSta
         return null;
     }
 
-    private formSubmit(e: React.FormEvent<HTMLFormElement>, formApi: FormFunctionProps): void {
+    private formSubmit(e: React.FormEvent<HTMLButtonElement>, formApi: FormFunctionProps): void {
         formApi.submitForm(e);
         const formValues = formApi.values;        
         const newMember = this.props.member;
@@ -61,9 +61,7 @@ export class MemberForm extends React.Component<IMemberFormProps, IMemberFormSta
         return (
             <Form defaultValues={defaultValues}>
                 {formApi => (
-                    <form 
-                        id={formId}
-                        onSubmit={(e)=>{ this.formSubmit(e, formApi) }}>
+                    <form id={formId}>
                         <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label htmlFor="firstName">First Name</label>
@@ -84,7 +82,7 @@ export class MemberForm extends React.Component<IMemberFormProps, IMemberFormSta
                             <button type="button" className="btn btn-outline-secondary" onClick={(e)=>{ this.cancelClick(e, formApi) }}>
                                 Canel
                             </button>
-                            <button type="submit" className="btn btn-primary">
+                            <button type="button" className="btn btn-primary" onClick={(e)=>{ this.formSubmit(e, formApi) }}>
                                 Save
                             </button>
                         </div>
