@@ -8,6 +8,12 @@ interface IReminderPanelContainerProps {
 
 interface IReminderPanelContainerState {
     membersList: IMember[];
+    displayState: State;
+}
+
+enum State {
+    Show,
+    Hide
 }
 
 export class ReminderPanelContainer extends React.Component<IReminderPanelContainerProps, IReminderPanelContainerState> {
@@ -15,7 +21,8 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
         super(props);
 
         this.state = {
-            membersList: []
+            membersList: [],
+            displayState: State.Hide
         };
     }
 
@@ -28,12 +35,26 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
 
         return null;
     }
+    
+    private showAction(): void {
+        this.setState({
+           membersList: this.state.membersList,
+           displayState: State.Show 
+        });
+    }
+
+    private hideAction(): void {
+        this.setState({
+           membersList: this.state.membersList,
+           displayState: State.Hide
+        });
+    }
 
     private getMemberReminderText(): string {
         let reminder = "";
 
         if(this.state.membersList && this.state.membersList[0]) {
-            const numMembers = this.setState.length;
+            const numMembers = this.state.membersList.length;
             const currentMember = this.state.membersList[0];
             const fullName = `${currentMember.firstName} ${currentMember.lastName}`;
             reminder = `${fullName} is up for Breakfast Club with ${numMembers} mouths to feed.`;
@@ -71,12 +92,24 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
     }
 
     render() {
+        const showAction = this.showAction.bind(this);
+        const hideAction = this.hideAction.bind(this);
+        const displayState = this.state.displayState;
+
         return(
-            <div className="row">
-                <div className="col">
-                    {this.renderMemberReminder()}
-                    {this.renderChannelReminder()}
-                </div>
+            <div>
+                {displayState === State.Show
+                    ?   <div>
+                            <button type="button" className="btn btn-primary" onClick={hideAction}>
+                                Hide Reminders
+                            </button>
+                            {this.renderMemberReminder()}
+                            {this.renderChannelReminder()}
+                        </div>
+                    :   <button type="button" className="btn btn-primary" onClick={showAction}>
+                            Show Reminders
+                        </button>
+                }
             </div>);
     }
 }

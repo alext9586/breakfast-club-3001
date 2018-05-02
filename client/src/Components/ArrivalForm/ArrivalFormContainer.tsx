@@ -87,7 +87,7 @@ export class ArrivalFormContainer extends React.Component<IArrivalFormContainerP
                         Cancel
                     </button>
                     <button type="button" className="btn btn-primary" onClick={saveAction}>
-                        Save
+                        Save and Rotate
                     </button>
                 </div>
             </form>

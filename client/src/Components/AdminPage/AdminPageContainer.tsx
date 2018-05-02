@@ -108,8 +108,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
 
     private addArrivalAction(arrival: IArrivalSend): void {        
         HttpService.addArrival(arrival).then(response => {
-            console.log(response);
-            this.refresh();
+            this.rotateAction();
         });
     }
 
@@ -146,6 +145,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
 
         return (
             <div>
+                <a className="btn btn-secondary" href="/">Home</a>
                 <h1>Admin Page</h1>
                 {hasMembers
                     ? <ReminderPanelContainer membersList={membersList} />
@@ -166,10 +166,12 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                             rotateAction={rotateAction}
                             addMemberAction={showAddMemberFormAction} />
                         {hasMembers
-                            ? <MemberTableContainer
-                                membersList={membersList}
-                                arrivalAction={showMemberArrivalFormAction}
-                                editMemberAction={showEditMemberFormAction} />
+                            ?   <div>
+                                    <MemberTableContainer
+                                        membersList={membersList}
+                                        arrivalAction={showMemberArrivalFormAction}
+                                        editMemberAction={showEditMemberFormAction} />
+                                </div>
                             :   <div>
                                     <h2>There are no members.</h2>
                                     <p>Please add members</p>
