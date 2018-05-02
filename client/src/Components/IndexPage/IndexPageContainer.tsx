@@ -75,7 +75,7 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
 
         return (
             <div className="row">
-                <div className="col-sm-4">
+                <div className="col-md-4">
                     <h2>Rotation</h2>
                     {hasMembers
                         ?   this.renderMembersTable()
@@ -84,7 +84,7 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
                             </div>
                     }
                 </div>
-                <div className="col-sm-8">
+                <div className="col-md-8">
                     <h2>Arrivals</h2>
                     {hasArrivalRecords
                         ? <ArrivalTable arrivalLog={this.state.arrivalLog} />

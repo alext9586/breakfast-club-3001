@@ -22,8 +22,8 @@ export class Arrival implements IArrival {
 export class ArrivalConverter {
     public static fromRawArrival(raw: IRawArrival) {
         let time = new Date(raw.arrivaltime);
-        let timezoneOffset = time.getTimezoneOffset();
-        time.setMinutes(time.getMinutes() - timezoneOffset);
+        // let timezoneOffset = time.getTimezoneOffset();
+        // time.setMinutes(time.getMinutes() - timezoneOffset);
         return new Arrival(raw.id, raw.memberid, raw.membername, time.toLocaleString("en-US"), raw.notes);
     }
 }
