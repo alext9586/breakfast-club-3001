@@ -50,14 +50,15 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
         });
     }
 
-    private getMemberReminderText(): string {
+    private getMemberReminderText(showMemberName: boolean): string {
         let reminder = "";
 
         if(this.state.membersList && this.state.membersList[0]) {
             const numMembers = this.state.membersList.length;
             const currentMember = this.state.membersList[0];
             const fullName = `${currentMember.firstName} ${currentMember.lastName}`;
-            reminder = `${fullName} is up for Breakfast Club with ${numMembers} mouths to feed.`;
+            const whois = showMemberName ? `${fullName} is` : "You're";
+            reminder = `${whois} up for Breakfast Club with ${numMembers} mouths to feed.`;
         }
 
         return reminder;
@@ -67,7 +68,7 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
         let reminder = "";
         if(this.state.membersList && this.state.membersList[0]) {
             let slackUsername = this.state.membersList[0].slackUsername;
-            let reminderText = this.getMemberReminderText();
+            let reminderText = this.getMemberReminderText(false);
             reminder = `\\remind @${slackUsername} "${reminderText}" next Thursday at noon`;
         }
 
@@ -83,7 +84,7 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
                 return (<div key={member.id}>{member.firstName} {member.lastName}</div>);
             });
 
-            rows.splice(0,0, (<div key="memberReminder">\remind @here "{this.getMemberReminderText()}</div>) );
+            rows.splice(0,0, (<div key="memberReminder">\remind @here "{this.getMemberReminderText(true)}</div>) );
             rows.push((<div key="reminderTime">" next Thursday at noon</div>))
         }
 
