@@ -4,15 +4,17 @@ import { MemberTableContainer } from 'src/Components/MemberTable/MemberTableCont
 import { MemberFormContainer } from 'src/Components/MemberForm/MemberFormContainer';
 import { Member, IMember } from 'src/Models/Member';
 import { HttpService } from 'src/Services/HttpService';
-import { IRawMember, IArrivalSend } from 'src/Models/RawViewModels';
+import { IRawMember, IArrivalSend, IRawArrival } from 'src/Models/RawViewModels';
 import { AdminMenuBar } from './AdminMenuBar';
 import { ArrivalFormContainer } from '../ArrivalForm/ArrivalFormContainer';
-import { IArrival } from '../../Models/Arrival';
+import { IArrival, ArrivalConverter } from '../../Models/Arrival';
+import { ArrivalTable } from '../ArrivalTable/ArrivalTable';
 
 interface IAdminPageContainerState {
     activeMember: IMember;
     displayState: State;
     membersList: IMember[];
+    arrivalLog: IArrival[];
 }
 
 enum State {
@@ -28,7 +30,8 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
         this.state = {
             activeMember: new Member(),
             displayState: State.DisplayMembers,
-            membersList: []
+            membersList: [],
+            arrivalLog: []
         };
     }
 
@@ -42,6 +45,14 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
     }
 
     private refresh() {
+        const arrivalCall = (callback: Function) => {
+            HttpService.getAllArrivals()
+                .then((res: IRawArrival[]) => {
+                    let arrivalLog = res.map(arrival => ArrivalConverter.fromRawArrival(arrival));
+                    callback(arrivalLog);
+                });
+        };
+
         HttpService.getAllMembers()
             .then((res: IRawMember[]) => {
                 var membersList = res.map(member => {
@@ -53,10 +64,14 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                         member.rotationorder,
                         member.isactive);
                 });
-                this.setState({
-                    activeMember: new Member(),
-                    displayState: State.DisplayMembers,
-                    membersList: membersList
+
+                arrivalCall((arrivals)=>{
+                    this.setState({
+                        activeMember: new Member(),
+                        displayState: State.DisplayMembers,
+                        membersList: membersList,
+                        arrivalLog: arrivals
+                    });
                 });
             })
             .catch(err => console.log(err));
@@ -66,7 +81,8 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
         this.setState({
             activeMember: new Member(),
             displayState: State.AddMember,
-            membersList: this.state.membersList
+            membersList: this.state.membersList,
+            arrivalLog: this.state.arrivalLog
         });
     }
 
@@ -74,7 +90,8 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
         this.setState({
             activeMember: member,
             displayState: State.EditMember,
-            membersList: this.state.membersList
+            membersList: this.state.membersList,
+            arrivalLog: this.state.arrivalLog
         });
     }
 
@@ -82,7 +99,8 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
         this.setState({
             activeMember: this.state.activeMember,
             displayState: State.MemberArrival,
-            membersList: this.state.membersList
+            membersList: this.state.membersList,
+            arrivalLog: this.state.arrivalLog
         });
     }
 
@@ -90,7 +108,8 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
         this.setState({
             activeMember: new Member(),
             displayState: State.DisplayMembers,
-            membersList: this.state.membersList
+            membersList: this.state.membersList,
+            arrivalLog: this.state.arrivalLog
         });
     }
 
@@ -120,7 +139,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
     }
 
     render(): JSX.Element {
-        const {activeMember, displayState, membersList} = this.state;
+        const {activeMember, displayState, membersList, arrivalLog} = this.state;
         const rotateAction = this.rotateAction.bind(this);
         
         const showAddMemberFormAction = this.showAddMemberFormAction.bind(this);
@@ -167,10 +186,13 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                             addMemberAction={showAddMemberFormAction} />
                         {hasMembers
                             ?   <div>
+                                    <h3>Members</h3>
                                     <MemberTableContainer
                                         membersList={membersList}
                                         arrivalAction={showMemberArrivalFormAction}
                                         editMemberAction={showEditMemberFormAction} />
+                                    <h3>Arrivals</h3>
+                                    <ArrivalTable arrivalLog={arrivalLog} />
                                 </div>
                             :   <div>
                                     <h2>There are no members.</h2>
