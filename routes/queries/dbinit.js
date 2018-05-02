@@ -5,7 +5,7 @@ const options = {
     promiseLib: promise
   };
   
-const cn = {
+const cn = process.env.DATABASE_URL || {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     database: "breakfastclub",
