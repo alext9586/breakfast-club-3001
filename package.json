@@ -5,7 +5,8 @@
     "client": "cd client && npm run start",
     "server": "node ./bin/www",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "dependencies": {
     "bluebird": "^3.5.1",
