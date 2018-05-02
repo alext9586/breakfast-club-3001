@@ -4,6 +4,8 @@ var router = express.Router();
 var members = require('./queries/members');
 var arrivals = require('./queries/arrivals');
 
+router.get('/members/allSimple', members.getAllMembersSimplified);
+
 router.get('/members/all', members.getAllMembers);
 
 router.post('/members/add', members.addMember);

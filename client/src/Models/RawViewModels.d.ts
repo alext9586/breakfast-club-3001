@@ -7,6 +7,12 @@ export interface IRawMember {
     isactive: boolean;
 }
 
+export interface IRawSimpleMember {
+    id: string;
+    fullname: string;
+    rotationorder: number;
+}
+
 export interface IRawArrival {
     id: string;
     memberid: string;

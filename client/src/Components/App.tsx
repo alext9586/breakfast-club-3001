@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './App.css';
-import { ArrivalTableContainer } from './ArrivalTable/ArrivalTableContainer';
 
 import logo from './logo.svg';
 import { AdminPageContainer } from './AdminPage/AdminPageContainer';
+import { IndexPageContainer } from './IndexPage/IndexPageContainer';
 
 class App extends React.Component {
   public render() {
@@ -17,7 +17,7 @@ class App extends React.Component {
         <div className="container">
           <Router>
             <div>
-              <Route exact path="/" component={ArrivalTableContainer} />
+              <Route exact path="/" component={IndexPageContainer} />
               <Route path="/admin" component={AdminPageContainer} />
             </div>
           </Router>

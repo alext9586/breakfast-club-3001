@@ -22,7 +22,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+const clientPath = process.env.ENVIRONMENT === "Dev" ? 'public' : 'client/build';
+app.use(express.static(path.join(__dirname, clientPath)));
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -31,9 +32,11 @@ app.use('/api', api);
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
+if(process.env.ENVIRONMENT !== "Dev") {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  });
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

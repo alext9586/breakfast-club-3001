@@ -3,6 +3,7 @@ import { IArrival } from "../Models/Arrival";
 import { IArrivalSend } from "../Models/RawViewModels";
 
 export interface IHttpService {
+    getAllSimpleMembers();
     getAllMembers();
     addMember(member: IMember);
     updateMember(member: IMember);
@@ -21,6 +22,12 @@ export class HttpService {
         if (response.status !== 200) throw Error(body.message);
 
         return body;
+    }
+
+    public static async getAllSimpleMembers() {
+        const response = await fetch('/api/members/allSimple');
+        
+        return this.waitForResponse(response);
     }
 
     public static async getAllMembers() {

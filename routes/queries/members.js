@@ -1,5 +1,17 @@
 const db = require("./dbinit").db;
 
+function getAllMembersSimplified(req, res, next) {
+  db.any("select m.id, (m.firstname || ' ' || m.lastname) fullname, mr.rotationorder " +
+    "from members m left join memberrotation mr on m.id = mr.memberid where m.isactive = true order by rotationorder")
+    .then(function (data) {
+      res.status(200)
+        .json(data);
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+}
+
 function getAllMembers(req, res, next) {
   db.any("select m.id, m.firstname, m.lastname, m.slackusername, mr.rotationorder, m.isactive " +
     "from members m left join memberrotation mr on m.id = mr.memberid order by rotationorder")
@@ -175,6 +187,7 @@ function changeActive(req, res, next) {
 }
 
 module.exports = {
+  getAllMembersSimplified: getAllMembersSimplified,
   getAllMembers: getAllMembers,
   addMember: addMember,
   updateMember: updateMember,
