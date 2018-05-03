@@ -60,7 +60,7 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
             <table className="table">
                 <thead>
                     <tr>
-                        <td>Position</td>
+                        <td>Order</td>
                         <td>Name</td>
                     </tr>
                 </thead>

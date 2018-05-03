@@ -33,6 +33,15 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
             membersList: [],
             arrivalLog: []
         };
+
+        this.rotateAction = this.rotateAction.bind(this);
+        
+        this.showAddMemberFormAction = this.showAddMemberFormAction.bind(this);
+        this.showEditMemberFormAction = this.showEditMemberFormAction.bind(this);
+        this.showMemberArrivalFormAction = this.showMemberArrivalFormAction.bind(this);
+
+        this.addArrivalAction = this.addArrivalAction.bind(this);
+        this.closeFormAction = this.closeFormAction.bind(this);
     }
 
     componentDidMount() {
@@ -140,15 +149,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
 
     render(): JSX.Element {
         const {activeMember, displayState, membersList, arrivalLog} = this.state;
-        const rotateAction = this.rotateAction.bind(this);
-        
-        const showAddMemberFormAction = this.showAddMemberFormAction.bind(this);
-        const showEditMemberFormAction = this.showEditMemberFormAction.bind(this);
-        const showMemberArrivalFormAction = this.showMemberArrivalFormAction.bind(this);
-
-        const addArrivalAction = this.addArrivalAction.bind(this);
-        const closeFormAction = this.closeFormAction.bind(this);
-        
+                
         const hasMembers = membersList.length > 0;
         const canRotate = membersList.length > 1;
 
@@ -164,33 +165,40 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
 
         return (
             <div>
-                <a className="btn btn-secondary" href="/">Home</a>
-                <h1>Admin Page</h1>
-                {hasMembers
-                    ? <ReminderPanelContainer membersList={membersList} />
-                    : null
+                {showMemberForm || showArrivalForm
+                    ?   <button type="button" className="btn btn-secondary" onClick={this.closeFormAction}>
+                            Back
+                        </button>
+                    :   <div>
+                            <a className="btn btn-secondary" href="/">Home</a>
+                            <h1>Admin Page</h1>
+                        </div>
                 }
                 {showMemberForm
-                    ? <MemberFormContainer
-                        formId="showMemberFormForm"
-                        member={activeMember}
-                        submitAction={memberFormSubmitAction}
-                        cancelAction={closeFormAction} />
+                    ?   <div>
+                            <h1>Add Member</h1>
+                            <MemberFormContainer
+                                formId="showMemberFormForm"
+                                member={activeMember}
+                                submitAction={memberFormSubmitAction}
+                                cancelAction={this.closeFormAction} />
+                        </div>
                     : null
                 }
                 {showMemberTable
                     ? <div>
                         <AdminMenuBar
                             canRotate={canRotate}
-                            rotateAction={rotateAction}
-                            addMemberAction={showAddMemberFormAction} />
+                            rotateAction={this.rotateAction}
+                            addMemberAction={this.showAddMemberFormAction} />
                         {hasMembers
                             ?   <div>
+                                    <ReminderPanelContainer membersList={membersList} />
                                     <h3>Members</h3>
                                     <MemberTableContainer
                                         membersList={membersList}
-                                        arrivalAction={showMemberArrivalFormAction}
-                                        editMemberAction={showEditMemberFormAction} />
+                                        arrivalAction={this.showMemberArrivalFormAction}
+                                        editMemberAction={this.showEditMemberFormAction} />
                                     <h3>Arrivals</h3>
                                     <ArrivalTableContainer arrivalLog={arrivalLog} />
                                 </div>
@@ -206,8 +214,8 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                     ? <ArrivalFormContainer
                         formId="arrivalForm"
                         member={currentMember}
-                        cancelAction={closeFormAction}
-                        saveAction={addArrivalAction} />
+                        cancelAction={this.closeFormAction}
+                        saveAction={this.addArrivalAction} />
                     : null
                 }                
             </div>
