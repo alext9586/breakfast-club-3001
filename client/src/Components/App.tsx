@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './App.css';
 
-import logo from './logo.svg';
+import logo from './toast.png';
 import { AdminPageContainer } from './AdminPage/AdminPageContainer';
 import { IndexPageContainer } from './IndexPage/IndexPageContainer';
 import { ArrivalsPageContainer } from './ArrivalsPage/ArrivalsPageContainer';
