@@ -5,6 +5,7 @@ import './App.css';
 import logo from './logo.svg';
 import { AdminPageContainer } from './AdminPage/AdminPageContainer';
 import { IndexPageContainer } from './IndexPage/IndexPageContainer';
+import { ArrivalsPageContainer } from './ArrivalsPage/ArrivalsPageContainer';
 
 class App extends React.Component {
   public render() {
@@ -19,6 +20,7 @@ class App extends React.Component {
             <div>
               <Route exact path="/" component={IndexPageContainer} />
               <Route path="/admin" component={AdminPageContainer} />
+              <Route path="/arrivals" component={ArrivalsPageContainer} />
             </div>
           </Router>
         </div>

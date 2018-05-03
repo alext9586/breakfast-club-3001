@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import { IArrival } from 'src/Models/Arrival';
 
 interface IArrivalTableProps {
@@ -29,9 +30,10 @@ export class ArrivalTable extends React.Component<IArrivalTableProps, IArrivalTa
 
     render() {
         const membersRows = this.state.arrivalLog.map((arrivalEntry) => {
+            let arrivalTime = moment(arrivalEntry.arrivalTime).format('lll');
             return (
                 <tr key={arrivalEntry.id}>
-                    <td>{arrivalEntry.arrivalTime}</td>
+                    <td>{arrivalTime}</td>
                     <td>{arrivalEntry.memberName}</td>
                     <td>{arrivalEntry.notes}</td>
                 </tr>);

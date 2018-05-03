@@ -1,8 +1,22 @@
 const db = require("./dbinit").db;
 
+const getAllQuery = "select arr.id, arr.memberid, (mem.firstname || ' ' || mem.lastname) membername, arr.arrivaltime, arr.notes " +
+"from arrivallog arr left join members mem on arr.memberid = mem.id order by arr.arrivaltime desc";
+
+function getLastTenArrivals(req, res, next) {
+  let query = getAllQuery + " limit 10";
+  db.any(query)
+    .then((data) => {
+      res.status(200)
+        .json(data);
+    })
+    .catch((err) => {
+      return next(err);
+    });
+}
+
 function getAll(req, res, next) {
-  let query = "select arr.id, arr.memberid, (mem.firstname || ' ' || mem.lastname) membername, arr.arrivaltime, arr.notes " +
-    "from arrivallog arr left join members mem on arr.memberid = mem.id order by arr.arrivaltime desc";
+  let query = getAllQuery;
   db.any(query)
     .then((data) => {
       res.status(200)
@@ -36,5 +50,6 @@ function addEntry(req, res, next) {
 
 module.exports = {
   getAll: getAll,
+  getLastTenArrivals: getLastTenArrivals,
   addEntry: addEntry
 };

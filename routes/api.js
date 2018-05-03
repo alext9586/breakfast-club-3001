@@ -24,6 +24,8 @@ router.post('/members/changeActive', members.changeActive);
 
 router.get('/arrivals/all', arrivals.getAll);
 
+router.get('/arrivals/lastTen', arrivals.getLastTenArrivals);
+
 router.post('/arrivals/add', arrivals.addEntry);
 
 module.exports = router;

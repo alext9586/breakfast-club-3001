@@ -4,6 +4,8 @@ import { IArrival, ArrivalConverter } from 'src/Models/Arrival';
 import { HttpService } from 'src/Services/HttpService';
 import { IRawArrival, IRawSimpleMember } from 'src/Models/RawViewModels';
 import { ISimpleMember, SimpleMemberConverter } from '../../Models/SimpleMember';
+import { ShowAllArrivalsButton } from '../ArrivalTable/ShowAllArrivalsButton';
+import { ArrivalTableContainer } from '../ArrivalTable/ArrivalTableContainer';
 
 interface IIndexPageContainerState {
     membersList: ISimpleMember[];
@@ -31,7 +33,7 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
         HttpService.getAllSimpleMembers().then((rawSimpleMembers: IRawSimpleMember[])=>{
             let membersList = rawSimpleMembers.map(member => SimpleMemberConverter.fromRawMember(member));
 
-            HttpService.getAllArrivals()
+            HttpService.getLastTenArrivals()
                 .then((res: IRawArrival[]) => {
                     let arrivalLog = res.map(arrival => ArrivalConverter.fromRawArrival(arrival));
                     this.setState({
@@ -72,6 +74,7 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
     render(): JSX.Element {
         const hasMembers = this.state.membersList.length > 0;
         const hasArrivalRecords = this.state.arrivalLog.length > 0;
+        const arrivalLog = this.state.arrivalLog;
 
         return (
             <div className="row">
@@ -87,7 +90,7 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
                 <div className="col-md-8">
                     <h2>Arrivals</h2>
                     {hasArrivalRecords
-                        ? <ArrivalTable arrivalLog={this.state.arrivalLog} />
+                        ? <ArrivalTableContainer arrivalLog={arrivalLog} />
                         :   <div>
                                 <h2>There are no arrivals.</h2>
                             </div>

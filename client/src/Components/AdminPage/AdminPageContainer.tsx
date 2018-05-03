@@ -8,7 +8,7 @@ import { IRawMember, IArrivalSend, IRawArrival } from 'src/Models/RawViewModels'
 import { AdminMenuBar } from './AdminMenuBar';
 import { ArrivalFormContainer } from '../ArrivalForm/ArrivalFormContainer';
 import { IArrival, ArrivalConverter } from '../../Models/Arrival';
-import { ArrivalTable } from '../ArrivalTable/ArrivalTable';
+import { ArrivalTableContainer } from '../ArrivalTable/ArrivalTableContainer';
 
 interface IAdminPageContainerState {
     activeMember: IMember;
@@ -46,7 +46,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
 
     private refresh() {
         const arrivalCall = (callback: Function) => {
-            HttpService.getAllArrivals()
+            HttpService.getLastTenArrivals()
                 .then((res: IRawArrival[]) => {
                     let arrivalLog = res.map(arrival => ArrivalConverter.fromRawArrival(arrival));
                     callback(arrivalLog);
@@ -192,7 +192,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                                         arrivalAction={showMemberArrivalFormAction}
                                         editMemberAction={showEditMemberFormAction} />
                                     <h3>Arrivals</h3>
-                                    <ArrivalTable arrivalLog={arrivalLog} />
+                                    <ArrivalTableContainer arrivalLog={arrivalLog} />
                                 </div>
                             :   <div>
                                     <h2>There are no members.</h2>

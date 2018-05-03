@@ -12,6 +12,7 @@ export interface IHttpService {
     saveList(membersList: IMember[]);
 
     getAllArrivals();
+    getLastTenArrivals();
     addArrival(memberId: string);
 }
 
@@ -130,6 +131,12 @@ export class HttpService {
 
     public static async getAllArrivals() {
         const response = await fetch('/api/arrivals/all');
+        
+        return this.waitForResponse(response);
+    }
+
+    public static async getLastTenArrivals() {
+        const response = await fetch('/api/arrivals/lastTen');
         
         return this.waitForResponse(response);
     }

@@ -63,7 +63,8 @@ export class ArrivalFormContainer extends React.Component<IArrivalFormContainerP
 
         return (
             <form style={this.formStyle}>
-                <h1>{fullname}</h1>
+                <h1>Member Arrival</h1>
+                <h2>{fullname}</h2>
                 <div className="form-group">
                     <label>Arrival Time</label>
                     <div>
