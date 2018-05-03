@@ -6,6 +6,7 @@ import logo from './toast.png';
 import { AdminPageContainer } from './AdminPage/AdminPageContainer';
 import { IndexPageContainer } from './IndexPage/IndexPageContainer';
 import { ArrivalsPageContainer } from './ArrivalsPage/ArrivalsPageContainer';
+import { AboutPageContainer } from './AboutPage/AboutPageContainer';
 
 class App extends React.Component {
   public render() {
@@ -21,6 +22,7 @@ class App extends React.Component {
               <Route exact path="/" component={IndexPageContainer} />
               <Route path="/admin" component={AdminPageContainer} />
               <Route path="/arrivals" component={ArrivalsPageContainer} />
+              <Route path="/about" component={AboutPageContainer} />
             </div>
           </Router>
         </div>

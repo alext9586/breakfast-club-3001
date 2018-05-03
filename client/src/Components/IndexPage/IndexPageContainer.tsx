@@ -78,6 +78,9 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
 
         return (
             <div className="row">
+                <div className="col-12 text-right">
+                    <a className="btn btn-secondary" href="/about">About</a>
+                </div>
                 <div className="col-md-4">
                     <h2>Rotation</h2>
                     {hasMembers
