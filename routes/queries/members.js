@@ -84,12 +84,12 @@ function updateMember(req, res, next) {
       });
 }
 
-function normalizeMemberRotation() {
-  db.any("select m.id, mr.rotationorder from members m left join memberrotation mr on m.id = mr.memberid order by rotationorder")
+function normalizeMemberRotation(t) {
+  t.any("select m.id, mr.rotationorder from members m left join memberrotation mr on m.id = mr.memberid order by rotationorder")
     .then(membersList => {
-      membersList.forEach((member, index) => {
-        db.none("update memberrotation set rotationorder=$1 where memberid=$2", [index + 1, member.id]);
-      });
+      return t.batch(membersList.map((member, index) => {
+        return t.none("update memberrotation set rotationorder=$1 where memberid=$2", [index + 1, member.id]);
+      }));
     });
 }
 
@@ -97,7 +97,7 @@ function deleteFromMembersAndRotation(memberId) {
   return db.task("deleteMember", t => {
     return t.none("DELETE FROM members WHERE id=$1", [memberId]).then(() => {
       return t.none("DELETE FROM memberrotation WHERE memberid=$1", [memberId]).then(() => {
-        normalizeMemberRotation();
+        return normalizeMemberRotation(t);
       })
     });
   });
@@ -144,11 +144,13 @@ function rotate(req, res, next) {
 }
 
 function saveNewOrder(membersList) {
-  return db.task("saveNewOrder", t => {
+  return db.tx("saveNewOrder", t => {
     return t.none("delete from memberrotation").then(() => {
-      membersList.forEach(member => {
-        t.none("insert into memberrotation(memberid, rotationorder) values($1, $2)", [member.id, member.rotationOrder]);
-      });
+      t.batch(
+        membersList.map(member => {
+          t.none("insert into memberrotation(memberid, rotationorder) values($1, $2)", [member.id, member.rotationOrder]);
+        })
+      );
     });
   });
 }
@@ -167,13 +169,13 @@ function changeActive(req, res, next) {
   let memberId = req.body.id;
   let isActive = req.body.isActive;
 
-  db.task(t => {
+  db.tx(t => {
     return t.none("update members set isactive = $1 where id = $2", [isActive, memberId]).then(() => {
       if(req.body.isActive){
         return insertIntoRotation(t, memberId);
       } else {
         return t.none("DELETE FROM memberrotation WHERE memberid=$1", [memberId]).then(() => {
-          normalizeMemberRotation();
+          return normalizeMemberRotation(t);
         });
       }
     });
