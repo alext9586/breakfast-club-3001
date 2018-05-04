@@ -85,12 +85,9 @@ function updateMember(req, res, next) {
 }
 
 function normalizeMemberRotation(t) {
-  t.any("select m.id, mr.rotationorder from members m left join memberrotation mr on m.id = mr.memberid order by rotationorder")
-    .then(membersList => {
-      return t.batch(membersList.map((member, index) => {
-        return t.none("update memberrotation set rotationorder=$1 where memberid=$2", [index + 1, member.id]);
-      }));
-    });
+  const membersQuery = "select m.id, mr.rotationorder, row_number() over (order by mr.rotationorder) as index from members m left join memberrotation mr on m.id = mr.memberid order by rotationorder";
+  const updateQuery = `update memberrotation set rotationorder=subquery.index from (${membersQuery}) as subquery where memberid=subquery.id`;
+  return t.any(updateQuery);
 }
 
 function deleteFromMembersAndRotation(memberId) {
