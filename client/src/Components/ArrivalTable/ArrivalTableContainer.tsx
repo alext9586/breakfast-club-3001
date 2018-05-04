@@ -14,7 +14,7 @@ export class ArrivalTableContainer extends React.Component<IArrivalTableContaine
 
     render(): JSX.Element {
         const arrivalLog = this.props.arrivalLog;
-        const showButton = arrivalLog.length === 10;
+        const showButton = arrivalLog.length >= 10;
 
         return (
             <div>

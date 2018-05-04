@@ -18,12 +18,23 @@ interface IMemberTableContainerState {
 }
 
 export class MemberTableContainer extends React.Component<IMemberTableContainerProps, IMemberTableContainerState> {
+    private actions: IMemberTableActions;
+
     constructor(props: any){
         super(props);
 
         this.state = {
             membersList: this.props.membersList
         };
+
+        this.actions = MemberTableActions.create(
+            this.memberUpAction.bind(this),
+            this.memberDownAction.bind(this),
+            this.toggleActiveAction.bind(this),
+            this.editMemberAction.bind(this),
+            this.updateMemberAction.bind(this),
+            this.deleteAction.bind(this),
+            this.addArrivalEntry.bind(this));
     }
 
     static getDerivedStateFromProps(nextProps: IMemberTableContainerProps, prevState: IMemberTableContainerState): IMemberTableContainerState | null {
@@ -127,18 +138,9 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
     }
 
     render(): JSX.Element {
-        const actions = MemberTableActions.create(
-            this.memberUpAction.bind(this),
-            this.memberDownAction.bind(this),
-            this.toggleActiveAction.bind(this),
-            this.editMemberAction.bind(this),
-            this.updateMemberAction.bind(this),
-            this.deleteAction.bind(this),
-            this.addArrivalEntry.bind(this));
-
         return (
             <MemberTable
                         membersList={this.state.membersList}
-                        actions={actions} />);
+                        actions={this.actions} />);
     }
 }
