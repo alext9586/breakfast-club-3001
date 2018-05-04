@@ -32,7 +32,7 @@ export class ArrivalsPageContainer extends React.Component<{}, IArrivalsPageCont
                     arrivalLog: arrivalLog
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     }
 
     render(): JSX.Element {

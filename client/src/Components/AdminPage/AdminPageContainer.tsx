@@ -34,6 +34,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
             arrivalLog: []
         };
 
+        this.refresh = this.refresh.bind(this);
         this.rotateAction = this.rotateAction.bind(this);
         
         this.showAddMemberFormAction = this.showAddMemberFormAction.bind(this);
@@ -83,7 +84,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                     });
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     }
 
     private showAddMemberFormAction(): void {
@@ -142,7 +143,6 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
 
     private rotateAction(): void {
         HttpService.rotate().then(response => {
-            console.log(response);
             this.refresh();
         });
     }
@@ -198,7 +198,8 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                                     <MemberTableContainer
                                         membersList={membersList}
                                         arrivalAction={this.showMemberArrivalFormAction}
-                                        editMemberAction={this.showEditMemberFormAction} />
+                                        editMemberAction={this.showEditMemberFormAction}
+                                        refreshAction={this.refresh} />
                                     <h3>Arrivals</h3>
                                     <ArrivalTableContainer arrivalLog={arrivalLog} />
                                 </div>

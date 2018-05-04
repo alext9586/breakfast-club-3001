@@ -41,8 +41,8 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
                         arrivalLog: arrivalLog
                     });
                 })
-                .catch(err => console.log(err));
-        }).catch(err => console.log(err));
+                .catch(err => console.error(err));
+        }).catch(err => console.error(err));
     }
 
     private renderMembersTable(): JSX.Element {

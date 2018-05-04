@@ -10,6 +10,7 @@ interface IMemberTableContainerProps {
     membersList: IMember[];
     editMemberAction: Function;
     arrivalAction: Function;
+    refreshAction: Function;
 }
 
 interface IMemberTableContainerState {
@@ -35,13 +36,6 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
         return null;
     }
     
-    // Fire a global event notifying refresh of data
-    private publishRefresh(): void {
-        var event = document.createEvent("Event");
-        event.initEvent("refresh", false, true); 
-        window.dispatchEvent(event);
-    }
-
     private sortByRotationOrder(a: IMember, b: IMember): number {
         if (a.rotationOrder < b.rotationOrder) {
             return -1;
@@ -82,8 +76,7 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
         membersList.sort(this.sortByRotationOrder);
 
         HttpService.saveList(membersList).then(response => {
-            console.log(response);
-            this.publishRefresh();
+            this.props.refreshAction();
         });
     }
 
@@ -113,22 +106,19 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
 
     private updateMemberAction(member: IMember): void {
         HttpService.updateMember(member).then(response => {
-            console.log(response);
-            this.publishRefresh();
+            this.props.refreshAction();
         });
     }
 
     private toggleActiveAction(member: IMember): void {
         HttpService.changeActive(member).then(response => {
-            console.log(response);
-            this.publishRefresh();
+            this.props.refreshAction();
         });
     }
 
     private deleteAction(memberId: string): void {
         HttpService.deleteMember(memberId).then(response => {
-            console.log(response);
-            this.publishRefresh();
+            this.props.refreshAction();
         });
     }
 
