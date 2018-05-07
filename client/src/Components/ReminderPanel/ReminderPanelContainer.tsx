@@ -69,7 +69,7 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
         if(this.state.membersList && this.state.membersList[0]) {
             let slackUsername = this.state.membersList[0].slackUsername;
             let reminderText = this.getMemberReminderText(false);
-            reminder = `\\remind @${slackUsername} "${reminderText}" next Thursday at noon`;
+            reminder = `/remind @${slackUsername} "${reminderText}" next Thursday at noon`;
         }
 
         let element = (<span>{reminder}</span>);
@@ -84,7 +84,7 @@ export class ReminderPanelContainer extends React.Component<IReminderPanelContai
                 return (<div key={member.id}>{member.firstName} {member.lastName}</div>);
             });
 
-            rows.splice(0,0, (<div key="memberReminder">\remind @here "{this.getMemberReminderText(true)}</div>) );
+            rows.splice(0,0, (<div key="memberReminder">/remind @here "{this.getMemberReminderText(true)}</div>) );
             rows.push((<div key="reminderTime">" next Thursday at noon</div>))
         }
 
