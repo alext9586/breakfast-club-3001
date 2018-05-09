@@ -1,18 +1,22 @@
 import { IRawSimpleMember } from "./RawViewModels";
+import { Moment } from "moment";
+import * as moment from "moment";
+import { FridayService } from "../Services/FridayService";
+import { MemberBase, IMemberBase } from "./MemberBase";
 
-export interface ISimpleMember {
+export interface ISimpleMember extends IMemberBase {
     id: string;
     fullname: string;
-    rotationOrder: number;
-    isAbsent: boolean;
+    rotationOrder: number;    
 }
 
-export class SimpleMember implements ISimpleMember {
+export class SimpleMember extends MemberBase implements ISimpleMember {
     constructor(
         public id: string = "",
         public fullname: string = "",
         public rotationOrder: number = -1,
-        public isAbsent: boolean = false) {
+        public absentDate: Moment = FridayService.getOutOfBoundsFriday()) {
+        super(absentDate);
     }
 }
 
@@ -22,7 +26,7 @@ export class SimpleMemberConverter {
             raw.id,
             raw.fullname,
             raw.rotationorder,
-            raw.isabsent
+            raw.absentdate ? moment(raw.absentdate) : FridayService.getOutOfBoundsFriday()
         );
     }
 }

@@ -21,6 +21,8 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
             membersList: [],
             arrivalLog: []
         };
+
+        this.absentClick = this.absentClick.bind(this);
     }
 
     componentDidMount() {
@@ -46,6 +48,12 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
         }).catch(err => console.error(err));
     }
 
+    private absentClick(member: ISimpleMember): void {
+        HttpService.setAbsent(member).then((data) => {
+            console.log("success:", data);
+        });
+    }
+
     render(): JSX.Element {
         const hasMembers = this.state.membersList.length > 0;
         const hasArrivalRecords = this.state.arrivalLog.length > 0;
@@ -59,7 +67,7 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
                 <div className="col-md-4">
                     <h2>Rotation</h2>
                     {hasMembers
-                        ?   <RotationTable membersList={this.state.membersList} />
+                        ?   <RotationTable membersList={this.state.membersList} absentClick={this.absentClick} />
                         :   <div>
                                 <h2>There are no members.</h2>
                             </div>

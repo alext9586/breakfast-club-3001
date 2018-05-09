@@ -3,16 +3,16 @@ export interface IRawMember {
     firstname: string;
     lastname: string;
     slackusername: string;
+    absentdate: string;
     rotationorder: number;
-    isactive: boolean;
-    isabsent: boolean;
+    isactive: boolean;    
 }
 
 export interface IRawSimpleMember {
     id: string;
     fullname: string;
     rotationorder: number;
-    isabsent: boolean;
+    absentdate: string;
 }
 
 export interface IRawArrival {

@@ -63,7 +63,7 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
         let membersList = this.state.membersList.filter(i => i.isActive);
         membersList.sort(this.sortByRotationOrder);
 
-        let foundMember = new Member();
+        let foundMember: IMember = new Member();
         let foundIndex = -1;
 
         membersList.some((member, index) => {

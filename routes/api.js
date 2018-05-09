@@ -20,6 +20,8 @@ router.post('/members/saveList', members.saveList);
 
 router.post('/members/changeActive', members.changeActive);
 
+router.post('/members/setAbsent', members.setAbsent);
+
 // ----------------------------------------------------------------------------
 
 router.get('/arrivals/all', arrivals.getAll);

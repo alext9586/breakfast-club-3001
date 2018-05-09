@@ -1,7 +1,7 @@
 const db = require("./dbinit").db;
 
 function getAllMembersSimplified(req, res, next) {
-  db.any("select m.id, (m.firstname || ' ' || m.lastname) fullname, mr.rotationorder " +
+  db.any("select m.id, (m.firstname || ' ' || m.lastname) fullname, mr.rotationorder, m.absentdate " +
     "from members m left join memberrotation mr on m.id = mr.memberid where m.isactive = true order by rotationorder")
     .then(function (data) {
       res.status(200)
@@ -13,7 +13,7 @@ function getAllMembersSimplified(req, res, next) {
 }
 
 function getAllMembers(req, res, next) {
-  db.any("select m.id, m.firstname, m.lastname, m.slackusername, mr.rotationorder, m.isactive " +
+  db.any("select m.id, m.firstname, m.lastname, m.slackusername, mr.rotationorder, m.isactive, m.absentdate " +
     "from members m left join memberrotation mr on m.id = mr.memberid order by rotationorder")
     .then(function (data) {
       res.status(200)
@@ -185,6 +185,20 @@ function changeActive(req, res, next) {
   });
 }
 
+function setAbsent(req, res, next) {
+  let memberId = req.body.id;
+  let absentDate = req.body.absentDate;
+
+  db.none("update members set absentdate = $1 where id = $2", [absentDate, memberId])
+    .then(()=>{
+      res.status(200)
+        .json({
+          status: 200,
+          message: "Changed member absence"
+        });
+    });
+}
+
 module.exports = {
   getAllMembersSimplified: getAllMembersSimplified,
   getAllMembers: getAllMembers,
@@ -193,5 +207,6 @@ module.exports = {
   deleteMember: deleteMember,
   rotate: rotate,
   saveList: saveList,
-  changeActive: changeActive
+  changeActive: changeActive,
+  setAbsent: setAbsent
 };

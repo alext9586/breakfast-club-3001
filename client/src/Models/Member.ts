@@ -1,16 +1,19 @@
 import { IRawMember } from "./RawViewModels";
+import { Moment } from "moment";
+import * as moment from "moment";
+import { FridayService } from "../Services/FridayService";
+import { MemberBase, IMemberBase } from "./MemberBase";
 
-export interface IMember {
+export interface IMember extends IMemberBase {
     id: string;
     firstName: string;
     lastName: string;
     slackUsername: string;
     rotationOrder: number;
     isActive: boolean;
-    isAbsent: boolean;
 }
 
-export class Member implements IMember {
+export class Member extends MemberBase implements IMember {
     constructor(
         public id: string = "",
         public firstName: string = "",
@@ -18,7 +21,8 @@ export class Member implements IMember {
         public slackUsername: string = "",
         public rotationOrder: number = -1,
         public isActive: boolean = true,
-        public isAbsent: boolean = false) {
+        public absentDate: Moment = FridayService.getOutOfBoundsFriday()) {
+        super(absentDate);
     }
 }
 
@@ -31,7 +35,7 @@ export class MemberConverter {
             raw.slackusername,
             raw.rotationorder,
             raw.isactive,
-            raw.isabsent
+            raw.absentdate ? moment(raw.absentdate) : FridayService.getOutOfBoundsFriday()
         );
     }
 }

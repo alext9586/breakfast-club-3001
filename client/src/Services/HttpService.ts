@@ -1,6 +1,7 @@
 import { IMember, Member } from "../Models/Member";
 import { IArrival } from "../Models/Arrival";
 import { IArrivalSend } from "../Models/RawViewModels";
+import { ISimpleMember } from "../Models/SimpleMember";
 
 export interface IHttpService {
     getAllSimpleMembers();
@@ -116,6 +117,24 @@ export class HttpService {
         };
 
         const response = await fetch('/api/members/changeActive', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        return this.waitForResponse(response);
+    }
+
+    public static async setAbsent(member: IMember | ISimpleMember) {
+        var data = {
+            id: member.id,
+            absentDate: member.absentDate.toDate()
+        };
+
+        const response = await fetch('/api/members/setAbsent', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
