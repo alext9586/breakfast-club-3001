@@ -5,12 +5,14 @@ export interface IRawMember {
     slackusername: string;
     rotationorder: number;
     isactive: boolean;
+    isabsent: boolean;
 }
 
 export interface IRawSimpleMember {
     id: string;
     fullname: string;
     rotationorder: number;
+    isabsent: boolean;
 }
 
 export interface IRawArrival {

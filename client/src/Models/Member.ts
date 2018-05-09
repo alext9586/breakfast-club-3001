@@ -7,6 +7,7 @@ export interface IMember {
     slackUsername: string;
     rotationOrder: number;
     isActive: boolean;
+    isAbsent: boolean;
 }
 
 export class Member implements IMember {
@@ -16,7 +17,8 @@ export class Member implements IMember {
         public lastName: string = "",
         public slackUsername: string = "",
         public rotationOrder: number = -1,
-        public isActive: boolean = true) {
+        public isActive: boolean = true,
+        public isAbsent: boolean = false) {
     }
 }
 
@@ -28,7 +30,8 @@ export class MemberConverter {
             raw.lastname,
             raw.slackusername,
             raw.rotationorder,
-            raw.isactive
+            raw.isactive,
+            raw.isabsent
         );
     }
 }

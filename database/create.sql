@@ -29,3 +29,10 @@ CREATE TABLE arrivallog (
   notes VARCHAR,
   CONSTRAINT pk_arrivallog PRIMARY KEY (ID)
 );
+
+CREATE TABLE absents (
+  ID uuid NOT NULL DEFAULT uuid_generate_v4(),
+  memberid uuid NOT NULL,
+  absentdate timestamp,
+  CONSTRAINT pk_absents PRIMARY KEY (ID)
+);

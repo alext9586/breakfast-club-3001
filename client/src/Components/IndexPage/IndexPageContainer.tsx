@@ -6,6 +6,7 @@ import { IRawArrival, IRawSimpleMember } from 'src/Models/RawViewModels';
 import { ISimpleMember, SimpleMemberConverter } from '../../Models/SimpleMember';
 import { ShowAllArrivalsButton } from '../ArrivalTable/ShowAllArrivalsButton';
 import { ArrivalTableContainer } from '../ArrivalTable/ArrivalTableContainer';
+import { RotationTable } from './RotationTable';
 
 interface IIndexPageContainerState {
     membersList: ISimpleMember[];
@@ -45,32 +46,6 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
         }).catch(err => console.error(err));
     }
 
-    private renderMembersTable(): JSX.Element {
-        const membersList = this.state.membersList;
-        const rows = membersList.map(member => {
-            return (
-                <tr key={member.id}>
-                    <td>{member.rotationOrder}</td>
-                    <td>{member.fullname}</td>
-                </tr>
-            );
-        });
-
-        return (
-            <table className="table">
-                <thead>
-                    <tr>
-                        <td>Order</td>
-                        <td>Name</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rows}
-                </tbody>
-            </table>
-        );
-    }
-
     render(): JSX.Element {
         const hasMembers = this.state.membersList.length > 0;
         const hasArrivalRecords = this.state.arrivalLog.length > 0;
@@ -84,7 +59,7 @@ export class IndexPageContainer extends React.Component<{}, IIndexPageContainerS
                 <div className="col-md-4">
                     <h2>Rotation</h2>
                     {hasMembers
-                        ?   this.renderMembersTable()
+                        ?   <RotationTable membersList={this.state.membersList} />
                         :   <div>
                                 <h2>There are no members.</h2>
                             </div>
