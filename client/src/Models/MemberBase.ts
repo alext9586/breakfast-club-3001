@@ -17,6 +17,11 @@ export class MemberBase implements IMemberBase {
     }
 
     public get isAbsent(): boolean {
-        return this.absentDate > this.lastFriday && this.absentDate <= this.upcomingFriday;
+        if(moment() < this.upcomingFriday) {
+            return this.absentDate > this.lastFriday
+                && this.absentDate < this.upcomingFriday;
+        } else {
+            return this.absentDate > this.upcomingFriday;
+        }
     }
 }
