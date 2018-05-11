@@ -1,8 +1,5 @@
 import * as React from 'react';
-import * as moment from 'moment';
-import { Moment } from 'moment';
 import { ISimpleMember, SimpleMember } from 'src/Models/SimpleMember';
-import { FridayService } from 'src/Services/FridayService';
 import './RotationTable.css';
 
 interface IRotationTableProps {
@@ -33,22 +30,6 @@ export class RotationTable extends React.Component<IRotationTableProps, IRotatio
         return null;
     }
 
-    private absentClick(member: ISimpleMember): void {
-        const absentDate = member.isAbsent ? FridayService.getOutOfBoundsFriday() : moment();
-        const updatedMember = new SimpleMember(member.id, member.fullname, member.rotationOrder, absentDate);
-
-        const newMemberList = this.state.membersList.map(m => {
-            if(m.id === member.id) {
-                return updatedMember;
-            } else {
-                return m;
-            }
-        });
-
-        this.setState({membersList: newMemberList});
-        this.props.absentClick(updatedMember);
-    }
-
     render(): JSX.Element {
         const membersList = this.state.membersList;
         const rows = membersList.map(member => {
@@ -62,7 +43,7 @@ export class RotationTable extends React.Component<IRotationTableProps, IRotatio
                     <td>
                         <button
                             className={buttonClassName}
-                            onClick={e => this.absentClick(member)}>
+                            onClick={e => this.props.absentClick(member)}>
                             Out
                         </button>
                     </td>
