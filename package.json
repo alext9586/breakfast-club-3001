@@ -26,5 +26,8 @@
     "concurrently": "^3.5.0",
     "deep-extend": "^0.6.0",
     "nodemon": "^1.18.10"
+  },
+  "engines": {
+    "node": "8.x"
   }
 }
