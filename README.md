@@ -1,6 +1,6 @@
 If in Windows, use PowerShell to run commands.
 
-Run `npm install` in both root and client folders.
+Run `npm install` in root folder.
 
 Run `npm start` from root folder to start a dev environment.
 

@@ -11,6 +11,7 @@
     "react-form": "^3.5.7",
     "react-redux": "^5.1.1",
     "react-router-dom": "^4.3.1",
+    "react-scripts-ts": "^3.1.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
   },
@@ -21,7 +22,7 @@
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
-    "@types/jest": "^22.2.3",
+    "@types/jest": "^24.0.11",
     "@types/node": "^9.6.46",
     "@types/react": "^16.8.8",
     "@types/react-dom": "^16.8.2",
@@ -31,8 +32,8 @@
     "macaddress": ">=0.2.9",
     "merge": ">=1.2.1",
     "randomatic": ">=3.0.0",
-    "url-parse": "^1.4.4",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.3.3333",
+    "url-parse": "^1.4.4"
   },
   "browserslist": [
     ">0.2%",
