@@ -2,6 +2,7 @@
   "name": "breakfast-club-3001",
   "version": "1.0.0",
   "scripts": {
+    "postinstall": "cd client && npm install",
     "client": "cd client && npm run start",
     "server": "node ./bin/www",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
