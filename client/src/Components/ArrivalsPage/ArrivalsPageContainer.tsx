@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ArrivalTable } from 'src/Components/ArrivalTable/ArrivalTable';
-import { IArrival, ArrivalConverter } from 'src/Models/Arrival';
-import { HttpService } from 'src/Services/HttpService';
-import { IRawArrival } from 'src/Models/RawViewModels';
+import { ArrivalTable } from '../ArrivalTable/ArrivalTable';
+import { IArrival, ArrivalConverter } from '../../Models/Arrival';
+import { HttpService } from '../../Services/HttpService';
+import { IRawArrival } from '../../Models/RawViewModels';
 
 interface IArrivalsPageContainerState {
     arrivalLog: IArrival[];

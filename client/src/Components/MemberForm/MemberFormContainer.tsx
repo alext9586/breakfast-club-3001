@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { IMember, Member } from 'src/Models/Member';
+import { IMember, Member } from '../../Models/Member';
 import { MemberForm } from './MemberForm';
-import { HttpService } from 'src/Services/HttpService';
 
 interface IMemberFormContainerProps {
     formId: string;

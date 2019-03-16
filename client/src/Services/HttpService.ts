@@ -1,19 +1,18 @@
-import { IMember, Member } from "../Models/Member";
-import { IArrival } from "../Models/Arrival";
+import { IMember } from "../Models/Member";
 import { IArrivalSend } from "../Models/RawViewModels";
 
 export interface IHttpService {
-    getAllSimpleMembers();
-    getAllMembers();
-    addMember(member: IMember);
-    updateMember(member: IMember);
-    deleteMember(memberId: string);
-    rotate();
-    saveList(membersList: IMember[]);
+    getAllSimpleMembers(): void;
+    getAllMembers(): void;
+    addMember(member: IMember): void;
+    updateMember(member: IMember): void;
+    deleteMember(memberId: string): void;
+    rotate(): void;
+    saveList(membersList: IMember[]): void;
 
-    getAllArrivals();
-    getLastTenArrivals();
-    addArrival(memberId: string);
+    getAllArrivals(): void;
+    getLastTenArrivals(): void;
+    addArrival(memberId: string): void;
 }
 
 export class HttpService {

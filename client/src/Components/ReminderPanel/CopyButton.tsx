@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CopyToClipboardService } from 'src/Services/CopyToClipboardService';
+import { CopyToClipboardService } from '../../Services/CopyToClipboardService';
 
 interface ICopyButtonProps {
     elementId: string;

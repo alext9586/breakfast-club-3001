@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { ArrivalTable } from 'src/Components/ArrivalTable/ArrivalTable';
-import { IArrival, ArrivalConverter } from 'src/Models/Arrival';
-import { HttpService } from 'src/Services/HttpService';
-import { IRawArrival, IRawSimpleMember } from 'src/Models/RawViewModels';
+import { IArrival, ArrivalConverter } from '../../Models/Arrival';
+import { HttpService } from '../../Services/HttpService';
+import { IRawArrival, IRawSimpleMember } from '../../Models/RawViewModels';
 import { ISimpleMember, SimpleMemberConverter } from '../../Models/SimpleMember';
-import { ShowAllArrivalsButton } from '../ArrivalTable/ShowAllArrivalsButton';
 import { ArrivalTableContainer } from '../ArrivalTable/ArrivalTableContainer';
 
 interface IIndexPageContainerState {

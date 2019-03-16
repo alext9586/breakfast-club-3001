@@ -5,7 +5,7 @@ interface ISaveMembersListButton {
 }
 
 export class SaveMembersListButton extends React.Component<ISaveMembersListButton, {}> {
-    constructor(props) {
+    constructor(props: Readonly<ISaveMembersListButton>) {
         super(props);
     }
 

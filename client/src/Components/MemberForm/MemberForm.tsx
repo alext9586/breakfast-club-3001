@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Form, Text, FormFunctionProps } from 'react-form';
-import { IMember, Member } from 'src/Models/Member';
+import { IMember } from '../../Models/Member';
 
 interface IMemberFormProps {
     formId: string;

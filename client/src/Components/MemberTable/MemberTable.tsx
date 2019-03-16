@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MemberTableRow } from './MemberTableRow';
-import { IMember } from 'src/Models/Member';
+import { IMember } from '../../Models/Member';
 import { IMemberTableActions } from './MemberTableActions';
 
 interface IMemberTableProps {
@@ -13,7 +13,7 @@ interface IMemberTableState {
 }
 
 export class MemberTable extends React.Component<IMemberTableProps, IMemberTableState> {
-    constructor(props) {
+    constructor(props: Readonly<IMemberTableProps>) {
         super(props);
         this.state = {
             membersList: props.membersList

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as moment from 'moment';
-import { IArrival } from 'src/Models/Arrival';
+import moment from 'moment';
+import { IArrival } from '../../Models/Arrival';
 
 interface IArrivalTableProps {
     arrivalLog: IArrival[];
@@ -11,7 +11,7 @@ interface IArrivalTableState {
 }
 
 export class ArrivalTable extends React.Component<IArrivalTableProps, IArrivalTableState> {
-    constructor(props) {
+    constructor(props: Readonly<IArrivalTableProps>) {
         super(props);
         this.state = {
             arrivalLog: props.arrivalLog

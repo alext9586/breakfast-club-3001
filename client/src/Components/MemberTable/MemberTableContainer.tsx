@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { MemberTable } from './MemberTable';
-import { IMember, Member } from 'src/Models/Member';
-import { IRawMember } from 'src/Models/RawViewModels';
-import { HttpService } from 'src/Services/HttpService';
+import { IMember, Member } from '../../Models/Member';
+import { HttpService } from '../../Services/HttpService';
 import { IMemberTableActions, MemberTableActions } from './MemberTableActions';
-import { SaveMembersListButton } from './SaveMembersListButton';
 
 interface IMemberTableContainerProps {
     membersList: IMember[];
@@ -92,7 +90,7 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
     }
 
     private memberUpAction(memberId: string): void {
-        this.moveMember(memberId, (membersList: IMember[], foundMember: IMember, foundIndex) => {
+        this.moveMember(memberId, (membersList: IMember[], foundMember: IMember, foundIndex: number) => {
             if(foundIndex === 0) {
                 membersList.push(foundMember);
             } else {
@@ -102,7 +100,7 @@ export class MemberTableContainer extends React.Component<IMemberTableContainerP
     }
 
     private memberDownAction(memberId: string): void {
-        this.moveMember(memberId, (membersList: IMember[], foundMember: IMember, foundIndex) => {
+        this.moveMember(memberId, (membersList: IMember[], foundMember: IMember, foundIndex: number) => {
             if(foundIndex === membersList.length) {
                 membersList.unshift(foundMember);
             } else {

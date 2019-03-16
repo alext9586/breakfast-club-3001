@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IMember } from 'src/Models/Member';
+import { IMember } from '../../Models/Member';
 import { MemberActiveToggle } from './MemberActiveToggle';
 import { UpDownButtons } from './UpDownButtons';
 import { IMemberTableActions } from './MemberTableActions';
@@ -10,7 +10,7 @@ interface IMemberTableRowProps {
 }
 
 export class MemberTableRow extends React.Component<IMemberTableRowProps, {}> {
-    constructor(props) {
+    constructor(props: Readonly<IMemberTableRowProps>) {
         super(props);
     }
 

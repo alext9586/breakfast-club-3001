@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ReminderPanelContainer } from '../ReminderPanel/ReminderPanelContainer';
-import { MemberTableContainer } from 'src/Components/MemberTable/MemberTableContainer';
-import { MemberFormContainer } from 'src/Components/MemberForm/MemberFormContainer';
-import { Member, IMember } from 'src/Models/Member';
-import { HttpService } from 'src/Services/HttpService';
-import { IRawMember, IArrivalSend, IRawArrival } from 'src/Models/RawViewModels';
+import { MemberTableContainer } from '../MemberTable/MemberTableContainer';
+import { MemberFormContainer } from '../MemberForm/MemberFormContainer';
+import { Member, IMember } from '../../Models/Member';
+import { HttpService } from '../../Services/HttpService';
+import { IRawMember, IArrivalSend, IRawArrival } from '../../Models/RawViewModels';
 import { AdminMenuBar } from './AdminMenuBar';
 import { ArrivalFormContainer } from '../ArrivalForm/ArrivalFormContainer';
 import { IArrival, ArrivalConverter } from '../../Models/Arrival';
@@ -75,7 +75,7 @@ export class AdminPageContainer extends React.Component<{}, IAdminPageContainerS
                         member.isactive);
                 });
 
-                arrivalCall((arrivals)=>{
+                arrivalCall((arrivals: IArrival[])=>{
                     this.setState({
                         activeMember: new Member(),
                         displayState: State.DisplayMembers,

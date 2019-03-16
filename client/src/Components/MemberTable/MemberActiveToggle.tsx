@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IMember, Member } from 'src/Models/Member';
+import { IMember, Member } from '../../Models/Member';
 
 interface IMemberActiveToggleProps {
     member: IMember;
@@ -11,7 +11,7 @@ interface IMemberActiveToggleState {
 }
 
 export class MemberActiveToggle extends React.Component<IMemberActiveToggleProps, IMemberActiveToggleState> {
-    constructor(props) {
+    constructor(props: Readonly<IMemberActiveToggleProps>) {
         super(props);
 
         this.state = {

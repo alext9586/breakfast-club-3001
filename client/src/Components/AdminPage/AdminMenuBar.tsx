@@ -7,7 +7,7 @@ interface IAdminMenuBarProps {
 }
 
 export class AdminMenuBar extends React.Component<IAdminMenuBarProps, {}> {
-    constructor(props) {
+    constructor(props: Readonly<IAdminMenuBarProps>) {
         super(props);
     }
 

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import DatePicker from 'react-datepicker';
-import * as moment from 'moment';
-import { IMember } from 'src/Models/Member';
-import { Arrival } from 'src/Models/Arrival';
-import { IArrivalSend } from 'src/Models/RawViewModels';
+import moment from 'moment';
+import { IMember } from '../../Models/Member';
+import { IArrivalSend } from '../../Models/RawViewModels';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './ArrivalForm.css';
@@ -17,7 +16,7 @@ interface IArrivalFormContainerProps {
 }
 
 interface IArrivalFormContainerStates {
-    arrivalTime: Moment;
+    arrivalTime: Date;
     notes: string;
 }
 
@@ -26,7 +25,7 @@ export class ArrivalFormContainer extends React.Component<IArrivalFormContainerP
         super(props);
 
         this.state = {
-            arrivalTime: moment(),
+            arrivalTime: new Date(),
             notes: ""
         }
 
@@ -35,7 +34,7 @@ export class ArrivalFormContainer extends React.Component<IArrivalFormContainerP
         this.saveAction = this.saveAction.bind(this);
     }
 
-    private handleTimeChange(date: Moment): void {
+    private handleTimeChange(date: Date): void {
         this.setState({
             arrivalTime: date,
             notes: this.state.notes
@@ -52,7 +51,7 @@ export class ArrivalFormContainer extends React.Component<IArrivalFormContainerP
     private saveAction(): void {
         const data: IArrivalSend = {
             memberId: this.props.member.id,
-            arrivalTime: this.state.arrivalTime.toDate(),
+            arrivalTime: this.state.arrivalTime,
             notes: this.state.notes
         };
 

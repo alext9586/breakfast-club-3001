@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IMember } from 'src/Models/Member';
+import { IMember } from '../../Models/Member';
 import { ReminderCard } from './ReminderCard';
 
 interface IReminderPanelContainerProps {

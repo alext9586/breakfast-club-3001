@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export class ShowAllArrivalsButton extends React.Component<{}, {}> {
-    constructor(props) {
+    constructor(props: Readonly<{}>) {
         super(props);
     }
 

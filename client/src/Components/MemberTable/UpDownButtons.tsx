@@ -7,7 +7,7 @@ interface IUpDownButtonsProps {
 }
 
 export class UpDownButtons extends React.Component<IUpDownButtonsProps, {}> {
-    constructor(props) {
+    constructor(props: Readonly<IUpDownButtonsProps>) {
         super(props);
     }
 

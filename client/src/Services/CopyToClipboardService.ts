@@ -4,7 +4,7 @@ export class CopyToClipboardService {
     }
 
     // https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
-    public static copyString(str) {
+    public static copyString(str: string) {
         const el = document.createElement('textarea');      // Create a <textarea> element
         el.value = str;                                     // Set its value to the string that you want copied
         el.setAttribute('readonly', '');                    // Make it readonly to be tamper-proof
