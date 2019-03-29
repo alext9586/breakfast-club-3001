@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ArrivalConverter, IArrival } from "../../Models/Arrival";
 import { HttpService } from "../../Services/HttpService";
@@ -19,29 +19,33 @@ interface IndexPageContainerProps {
 	viewMain: typeof viewMain;
 }
 
-class IndexPageContainer extends React.Component<IndexPageContainerProps> {
+class IndexPageContainer extends Component<IndexPageContainerProps> {
 	componentDidMount() {
 		this.refresh();
 	}
 
 	private refresh(): void {
-		HttpService.getAllSimpleMembers()
-			.then((rawSimpleMembers: IRawSimpleMember[]) => {
-				let membersList = rawSimpleMembers.map(member =>
-					SimpleMemberConverter.fromRawMember(member)
-				);
-
-				HttpService.getLastTenArrivals()
-					.then((res: IRawArrival[]) => {
-						let arrivalLog = res.map(arrival =>
-							ArrivalConverter.fromRawArrival(arrival)
-						);
-
-						this.props.viewMain(membersList, arrivalLog);
-					})
-					.catch(err => console.error(err));
+		Promise.all([this.getAllSimpleMembers(), this.getLastTenArrivals()])
+			.then(([membersList, arrivalLog]) => {
+				this.props.viewMain(membersList, arrivalLog);
 			})
 			.catch(err => console.error(err));
+	}
+
+	private getAllSimpleMembers(): Promise<ISimpleMember[]> {
+		return HttpService.getAllSimpleMembers().then(
+			(rawSimpleMembers: IRawSimpleMember[]) => {
+				return rawSimpleMembers.map(member =>
+					SimpleMemberConverter.fromRawMember(member)
+				);
+			}
+		);
+	}
+
+	private getLastTenArrivals(): Promise<IArrival[]> {
+		return HttpService.getLastTenArrivals().then((res: IRawArrival[]) => {
+			return res.map(arrival => ArrivalConverter.fromRawArrival(arrival));
+		});
 	}
 
 	private renderMembersTable(): JSX.Element {
