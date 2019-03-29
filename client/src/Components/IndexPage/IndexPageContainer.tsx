@@ -7,7 +7,7 @@ import {
 	ISimpleMember,
 	SimpleMemberConverter
 } from "../../Models/SimpleMember";
-import { ArrivalTableContainer } from "../ArrivalTable/ArrivalTableContainer";
+import ArrivalTableContainer from "../ArrivalTable/ArrivalTableContainer";
 import { AppState } from "../../Store";
 import { viewMain } from "../../Actions";
 import { Stages } from "../../Stages";
@@ -38,10 +38,6 @@ class IndexPageContainer extends React.Component<IndexPageContainerProps> {
 						);
 
 						this.props.viewMain(membersList, arrivalLog);
-						// this.setState({
-						// 	membersList: membersList,
-						// 	arrivalLog: arrivalLog
-						// });
 					})
 					.catch(err => console.error(err));
 			})
@@ -73,15 +69,12 @@ class IndexPageContainer extends React.Component<IndexPageContainerProps> {
 	}
 
 	render(): JSX.Element {
+		const { stage, membersList, arrivalLog } = this.props;
+
 		const hasMembers =
-			this.props.stage === Stages.Loading
-				? false
-				: this.props.membersList.length > 0;
+			stage === Stages.Loading ? false : membersList.length > 0;
 		const hasArrivalRecords =
-			this.props.stage === Stages.Loading
-				? false
-				: this.props.arrivalLog.length > 0;
-		const arrivalLog = this.props.arrivalLog;
+			stage === Stages.Loading ? false : arrivalLog.length > 0;
 
 		return (
 			<div className="row">
@@ -103,7 +96,7 @@ class IndexPageContainer extends React.Component<IndexPageContainerProps> {
 				<div className="col-md-8">
 					<h2>Arrivals</h2>
 					{hasArrivalRecords ? (
-						<ArrivalTableContainer arrivalLog={arrivalLog} />
+						<ArrivalTableContainer />
 					) : (
 						<div>
 							<h2>There are no arrivals.</h2>
