@@ -1,53 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { ArrivalConverter, IArrival } from "../../Models/Arrival";
-import { HttpService } from "../../Services/HttpService";
-import { IRawArrival, IRawSimpleMember } from "../../Models/RawViewModels";
-import {
-	ISimpleMember,
-	SimpleMemberConverter
-} from "../../Models/SimpleMember";
+import { IArrival } from "../../Models/Arrival";
+import { ISimpleMember } from "../../Models/SimpleMember";
 import ArrivalTableContainer from "../ArrivalTable/ArrivalTableContainer";
 import { AppState } from "../../Store";
-import { viewMain } from "../../Actions";
 import { Stages } from "../../Stages";
 
 interface IndexPageContainerProps {
 	stage: Stages;
 	membersList: ISimpleMember[];
 	arrivalLog: IArrival[];
-	viewMain: typeof viewMain;
 }
 
 class IndexPageContainer extends Component<IndexPageContainerProps> {
-	componentDidMount() {
-		this.refresh();
-	}
-
-	private refresh(): void {
-		Promise.all([this.getAllSimpleMembers(), this.getLastTenArrivals()])
-			.then(([membersList, arrivalLog]) => {
-				this.props.viewMain(membersList, arrivalLog);
-			})
-			.catch(err => console.error(err));
-	}
-
-	private getAllSimpleMembers(): Promise<ISimpleMember[]> {
-		return HttpService.getAllSimpleMembers().then(
-			(rawSimpleMembers: IRawSimpleMember[]) => {
-				return rawSimpleMembers.map(member =>
-					SimpleMemberConverter.fromRawMember(member)
-				);
-			}
-		);
-	}
-
-	private getLastTenArrivals(): Promise<IArrival[]> {
-		return HttpService.getLastTenArrivals().then((res: IRawArrival[]) => {
-			return res.map(arrival => ArrivalConverter.fromRawArrival(arrival));
-		});
-	}
-
 	private renderMembersTable(): JSX.Element {
 		const membersList = this.props.membersList;
 		const rows = membersList.map((member: ISimpleMember) => {
@@ -118,7 +83,4 @@ const mapStateToProps = (state: AppState) => ({
 	arrivalLog: state.arrivalLog
 });
 
-export default connect(
-	mapStateToProps,
-	{ viewMain }
-)(IndexPageContainer);
+export default connect(mapStateToProps)(IndexPageContainer);
