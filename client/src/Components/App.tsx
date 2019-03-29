@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
 
 import logo from "./toast.png";
-import { AdminPageContainer } from "./AdminPage/AdminPageContainer";
+import AdminPageContainer from "./AdminPage/AdminPageContainer";
 import IndexPageContainer from "./IndexPage/IndexPageContainer";
 import { ArrivalsPageContainer } from "./ArrivalsPage/ArrivalsPageContainer";
 import { AboutPageContainer } from "./AboutPage/AboutPageContainer";

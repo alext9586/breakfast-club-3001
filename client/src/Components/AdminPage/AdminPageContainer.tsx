@@ -1,24 +1,18 @@
-import * as React from "react";
+import React, { Component } from "react";
 import { ReminderPanelContainer } from "../ReminderPanel/ReminderPanelContainer";
 import { MemberTableContainer } from "../MemberTable/MemberTableContainer";
 import { MemberFormContainer } from "../MemberForm/MemberFormContainer";
 import { Member, IMember } from "../../Models/Member";
 import { HttpService } from "../../Services/HttpService";
-import {
-	IRawMember,
-	IArrivalSend,
-	IRawArrival
-} from "../../Models/RawViewModels";
+import { IRawMember, IArrivalSend } from "../../Models/RawViewModels";
 import { AdminMenuBar } from "./AdminMenuBar";
 import { ArrivalFormContainer } from "../ArrivalForm/ArrivalFormContainer";
-import { IArrival, ArrivalConverter } from "../../Models/Arrival";
 import ArrivalTableContainer from "../ArrivalTable/ArrivalTableContainer";
 
 interface IAdminPageContainerState {
 	activeMember: IMember;
 	displayState: State;
 	membersList: IMember[];
-	arrivalLog: IArrival[];
 }
 
 enum State {
@@ -28,7 +22,7 @@ enum State {
 	MemberArrival
 }
 
-export class AdminPageContainer extends React.Component<
+export default class AdminPageContainer extends Component<
 	{},
 	IAdminPageContainerState
 > {
@@ -37,8 +31,7 @@ export class AdminPageContainer extends React.Component<
 		this.state = {
 			activeMember: new Member(),
 			displayState: State.DisplayMembers,
-			membersList: [],
-			arrivalLog: []
+			membersList: []
 		};
 
 		this.refresh = this.refresh.bind(this);
@@ -66,18 +59,9 @@ export class AdminPageContainer extends React.Component<
 	}
 
 	private refresh() {
-		const arrivalCall = (callback: Function) => {
-			HttpService.getLastTenArrivals().then((res: IRawArrival[]) => {
-				let arrivalLog = res.map(arrival =>
-					ArrivalConverter.fromRawArrival(arrival)
-				);
-				callback(arrivalLog);
-			});
-		};
-
 		HttpService.getAllMembers()
 			.then((res: IRawMember[]) => {
-				var membersList = res.map(member => {
+				const membersList = res.map(member => {
 					return new Member(
 						member.id,
 						member.firstname,
@@ -88,13 +72,10 @@ export class AdminPageContainer extends React.Component<
 					);
 				});
 
-				arrivalCall((arrivals: IArrival[]) => {
-					this.setState({
-						activeMember: new Member(),
-						displayState: State.DisplayMembers,
-						membersList: membersList,
-						arrivalLog: arrivals
-					});
+				this.setState({
+					activeMember: new Member(),
+					displayState: State.DisplayMembers,
+					membersList: membersList
 				});
 			})
 			.catch(err => console.error(err));
@@ -104,8 +85,7 @@ export class AdminPageContainer extends React.Component<
 		this.setState({
 			activeMember: new Member(),
 			displayState: State.AddMember,
-			membersList: this.state.membersList,
-			arrivalLog: this.state.arrivalLog
+			membersList: this.state.membersList
 		});
 	}
 
@@ -113,8 +93,7 @@ export class AdminPageContainer extends React.Component<
 		this.setState({
 			activeMember: member,
 			displayState: State.EditMember,
-			membersList: this.state.membersList,
-			arrivalLog: this.state.arrivalLog
+			membersList: this.state.membersList
 		});
 	}
 
@@ -122,8 +101,7 @@ export class AdminPageContainer extends React.Component<
 		this.setState({
 			activeMember: this.state.activeMember,
 			displayState: State.MemberArrival,
-			membersList: this.state.membersList,
-			arrivalLog: this.state.arrivalLog
+			membersList: this.state.membersList
 		});
 	}
 
@@ -131,8 +109,7 @@ export class AdminPageContainer extends React.Component<
 		this.setState({
 			activeMember: new Member(),
 			displayState: State.DisplayMembers,
-			membersList: this.state.membersList,
-			arrivalLog: this.state.arrivalLog
+			membersList: this.state.membersList
 		});
 	}
 
@@ -161,12 +138,7 @@ export class AdminPageContainer extends React.Component<
 	}
 
 	render(): JSX.Element {
-		const {
-			activeMember,
-			displayState,
-			membersList,
-			arrivalLog
-		} = this.state;
+		const { activeMember, displayState, membersList } = this.state;
 
 		const hasMembers = membersList.length > 0;
 		const canRotate = membersList.length > 1;
